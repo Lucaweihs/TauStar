@@ -1,0 +1,3 @@
+useDynLib(TauStar)
+exportPattern("^[[:alpha:]]+[^R][^C][^P][^P]$")
+importFrom(Rcpp, evalCpp)
