@@ -1,7 +1,7 @@
 Package: TauStar
 Type: Package
 Title: Efficient computation of the t* statistic corresponding of Bergsma and Dassios (2015)
-Version: 1.0
+Version: 1.0.0
 Date: 2015-9-30
 Author: Luca Weihs
 Maintainer: Luca Weihs <lucaw@uw.edu>
