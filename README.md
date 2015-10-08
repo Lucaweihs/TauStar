@@ -25,12 +25,12 @@ This fast algorithm is implemented in this package.
 A simple example of computing t* on a independent bivariate normal distribution
 follows:
 
-`
+```
 > set.seed(2342)
 > x = rnorm(1000)
 > y = rnorm(1000)
 > tStar(x, y)
 [1] 0.0003637266
-`
+```
 
 All functionality for this package is currently wrapped in the tStar function.
