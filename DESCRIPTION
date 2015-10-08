@@ -1,11 +1,16 @@
 Package: TauStar
 Type: Package
-Title: Efficient computation of the t* statistic corresponding of Bergsma and Dassios (2015)
+Title: Efficient Computation of the t* Statistic of Bergsma and Dassios (2015)
 Version: 1.0.0
 Date: 2015-9-30
-Author: Luca Weihs
+Authors@R: c(person("Luca", "Weihs", email="lucaw@uw.edu", role=c("aut", "cre")),
+            person("Emin", "Martinian", role=c("ctb"), comment="Created the red-black tree library included in package."))
 Maintainer: Luca Weihs <lucaw@uw.edu>
-Description: Computes the t* statistic corresponding to the tau star population coefficient introduced by Bergsma and Dassios (Bernoulli 20(2), 2014, 1006-1028) and does so in  O(n^2*log(n)) time. Can provide both the V-statistic and U-statistic related to the tau star measure depending on user preference.
+Description: Computes the t* statistic corresponding to the tau star population
+    coefficient introduced by Bergsma and Dassios (Bernoulli 20(2), 2014,
+    1006-1028) and does so in  O(n^2*log(n)) time. Can provide both the
+    V-statistic and U-statistic related to the tau star measure depending on
+    user preference.
 License: GPL (>= 3)
 Imports: Rcpp (>= 0.11.4)
 LinkingTo: Rcpp, RcppArmadillo
