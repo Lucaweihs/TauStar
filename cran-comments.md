@@ -12,8 +12,8 @@ There was 1 NOTE:
   New submission
 
   The Title field should be in title case, current version then in title case:
-  ‘Efficient Computation of the t* Statistic of Bergsma and Dassios (2015)’
-  ‘Efficient Computation of the T* Statistic of Bergsma and Dassios (2015)’
+  ‘Efficient Computation of the t* Statistic of Bergsma and Dassios (2014)’
+  ‘Efficient Computation of the T* Statistic of Bergsma and Dassios (2014)’
   
   t* is intentionally lower-case as it is the name of a particular statistic.
 
