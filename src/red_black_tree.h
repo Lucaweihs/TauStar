@@ -1,3 +1,23 @@
+/***
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that neither the name of Emin
+ * Martinian nor the names of any contributors are be used to endorse or
+ * promote products derived from this software without specific prior
+ * written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 #ifdef DMALLOC
 #include <dmalloc.h>
 #endif
@@ -38,7 +58,7 @@ typedef struct rb_red_blk_node {
 /* Compare(a,b) should return 1 if *a > *b, -1 if *a < *b, and 0 otherwise */
 /* Destroy(a) takes a pointer to whatever key might be and frees it accordingly */
 typedef struct rb_red_blk_tree {
-  int (*Compare)(const void* a, const void* b); 
+  int (*Compare)(const void* a, const void* b);
   void (*DestroyKey)(void* a);
   void (*DestroyInfo)(void* a);
   void (*PrintKey)(const void* a);
@@ -49,13 +69,13 @@ typedef struct rb_red_blk_tree {
   /*  node which should always be black but has aribtrary children and */
   /*  parent and no key or info.  The point of using these sentinels is so */
   /*  that the root and nil nodes do not require special cases in the code */
-  rb_red_blk_node* root;             
-  rb_red_blk_node* nil;              
+  rb_red_blk_node* root;
+  rb_red_blk_node* nil;
 } rb_red_blk_tree;
 
 rb_red_blk_tree* RBTreeCreate(int  (*CompFunc)(const void*, const void*),
-			     void (*DestFunc)(void*), 
-			     void (*InfoDestFunc)(void*), 
+			     void (*DestFunc)(void*),
+			     void (*InfoDestFunc)(void*),
 			     void (*PrintFunc)(const void*),
 			     void (*PrintInfo)(void*));
 rb_red_blk_node * RBTreeInsert(rb_red_blk_tree*, void* key, void* info);

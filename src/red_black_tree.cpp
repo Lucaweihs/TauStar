@@ -1,3 +1,24 @@
+/***
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that neither the name of Emin
+ * Martinian nor the names of any contributors are be used to endorse or
+ * promote products derived from this software without specific prior
+ * written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
 #include "red_black_tree.h"
 #include <Rcpp.h>
 
@@ -108,7 +129,7 @@ void LeftRotate(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 	y->leftSize = x->numInstances + x->rightSize + x->leftSize;
 
 #ifdef DEBUG_ASSERT
-	Assert(!tree->nil->red,"nil not red in LeftRotate");
+	Assert(!tree->nil->red, "nil not red in LeftRotate");
 #endif
 }
 
@@ -164,7 +185,7 @@ void RightRotate(rb_red_blk_tree* tree, rb_red_blk_node* y) {
 	y->leftSize = x->rightSize;
 	x->rightSize = y->numInstances + y->leftSize + y->rightSize;
 #ifdef DEBUG_ASSERT
-	Assert(!tree->nil->red,"nil not red in RightRotate");
+	Assert(!tree->nil->red, "nil not red in RightRotate");
 #endif
 }
 
@@ -182,7 +203,6 @@ void RightRotate(rb_red_blk_tree* tree, rb_red_blk_node* y) {
 /*            by Cormen et al.  This funciton is only intended to be called */
 /*            by the RBTreeInsert function and not by the user */
 /***********************************************************************/
-
 void TreeInsertHelp(rb_red_blk_tree* tree, rb_red_blk_node* z) {
 	/*  This function should only be called by InsertRBTree (see above) */
 	rb_red_blk_node* x;
@@ -203,17 +223,6 @@ void TreeInsertHelp(rb_red_blk_tree* tree, rb_red_blk_node* z) {
 		}
 	}
 	z->parent = y;
-
-	/*
-	if ( (y == tree->root) ||
-	(1 == tree->Compare(y->key,z->key))) { // y.key > z.key
-		y->left=z;
-	} else {
-		y->right=z;
-	}
-	lastNode = z;
-	currentNode = z->parent;
-	*/
 
 	if(!(y == tree->root) && (0 == tree->Compare(y->key,z->key))) {
 		y->numInstances += 1;
@@ -242,7 +251,7 @@ void TreeInsertHelp(rb_red_blk_tree* tree, rb_red_blk_node* z) {
 	}
 
 #ifdef DEBUG_ASSERT
-	Assert(!tree->nil->red,"nil not red in TreeInsertHelp");
+	Assert(!tree->nil->red, "nil not red in TreeInsertHelp");
 #endif
 }
 
@@ -265,7 +274,6 @@ void TreeInsertHelp(rb_red_blk_tree* tree, rb_red_blk_node* z) {
 /*  EFFECTS:  Creates a node node which contains the appropriate key and */
 /*            info pointers and inserts it into the tree. */
 /***********************************************************************/
-
 rb_red_blk_node * RBTreeInsert(rb_red_blk_tree* tree, void* key, void* info) {
 	rb_red_blk_node * y;
 	rb_red_blk_node * x;
@@ -325,8 +333,8 @@ rb_red_blk_node * RBTreeInsert(rb_red_blk_tree* tree, void* key, void* info) {
 	return(newNode);
 
 #ifdef DEBUG_ASSERT
-	Assert(!tree->nil->red,"nil not red in RBTreeInsert");
-	Assert(!tree->root->red,"root not red in RBTreeInsert");
+	Assert(!tree->nil->red, "nil not red in RBTreeInsert");
+	Assert(!tree->root->red, "root not red in RBTreeInsert");
 #endif
 }
 
@@ -343,7 +351,6 @@ rb_red_blk_node * RBTreeInsert(rb_red_blk_tree* tree, void* key, void* info) {
 /**/
 /*    Note:  uses the algorithm in _Introduction_To_Algorithms_ */
 /***********************************************************************/
-
 rb_red_blk_node* TreeSuccessor(rb_red_blk_tree* tree,rb_red_blk_node* x) {
 	rb_red_blk_node* y;
 	rb_red_blk_node* nil=tree->nil;
@@ -378,7 +385,6 @@ rb_red_blk_node* TreeSuccessor(rb_red_blk_tree* tree,rb_red_blk_node* x) {
 /**/
 /*    Note:  uses the algorithm in _Introduction_To_Algorithms_ */
 /***********************************************************************/
-
 rb_red_blk_node* TreePredecessor(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 	rb_red_blk_node* y;
 	rb_red_blk_node* nil=tree->nil;
@@ -414,7 +420,6 @@ rb_red_blk_node* TreePredecessor(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 /**/
 /*    Note:    This function should only be called from RBTreePrint */
 /***********************************************************************/
-
 void InorderTreePrint(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 	rb_red_blk_node* nil=tree->nil;
 	rb_red_blk_node* root=tree->root;
@@ -450,7 +455,6 @@ void InorderTreePrint(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 /**/
 /*    Note:    This function should only be called by RBTreeDestroy */
 /***********************************************************************/
-
 void TreeDestHelper(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 	rb_red_blk_node* nil=tree->nil;
 	if (x != nil) {
@@ -461,7 +465,6 @@ void TreeDestHelper(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 		free(x);
 	}
 }
-
 
 /***********************************************************************/
 /*  FUNCTION:  RBTreeDestroy */
@@ -535,7 +538,6 @@ rb_red_blk_node* RBExactQuery(rb_red_blk_tree* tree, void* q) {
 	return(x);
 }
 
-
 /***********************************************************************/
 /*  FUNCTION:  RBDeleteFixUp */
 /**/
@@ -551,7 +553,6 @@ rb_red_blk_node* RBExactQuery(rb_red_blk_tree* tree, void* q) {
 /**/
 /*    The algorithm from this function is from _Introduction_To_Algorithms_ */
 /***********************************************************************/
-
 void RBDeleteFixUp(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 	rb_red_blk_node* root=tree->root->left;
 	rb_red_blk_node* w;
@@ -610,10 +611,9 @@ void RBDeleteFixUp(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 	x->red=0;
 
 #ifdef DEBUG_ASSERT
-	Assert(!tree->nil->red,"nil not black in RBDeleteFixUp");
+	Assert(!tree->nil->red, "nil not black in RBDeleteFixUp");
 #endif
 }
-
 
 /***********************************************************************/
 /*  FUNCTION:  RBDelete */
@@ -630,7 +630,6 @@ void RBDeleteFixUp(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 /**/
 /*    The algorithm from this function is from _Introduction_To_Algorithms_ */
 /***********************************************************************/
-
 void RBDelete(rb_red_blk_tree* tree, rb_red_blk_node* z){
 	rb_red_blk_node* y;
 	rb_red_blk_node* x;
@@ -651,7 +650,7 @@ void RBDelete(rb_red_blk_tree* tree, rb_red_blk_node* z){
 	if (y != z) { /* y should not be nil in this case */
 
 #ifdef DEBUG_ASSERT
-		Assert( (y!=tree->nil),"y is nil in RBDelete\n");
+		Assert( (y!=tree->nil), "y is nil in RBDelete\n");
 #endif
 		/* y is the node to splice out and x is its child */
 
@@ -678,7 +677,7 @@ void RBDelete(rb_red_blk_tree* tree, rb_red_blk_node* z){
 	}
 
 #ifdef DEBUG_ASSERT
-	Assert(!tree->nil->red,"nil not black in RBDelete");
+	Assert(!tree->nil->red, "nil not black in RBDelete");
 #endif
 }
 
@@ -740,44 +739,3 @@ int RBNumLessThan(rb_red_blk_tree* tree, void* key) {
 	}
 	return(nodeCount);
 }
-
-
-/***********************************************************************/
-/*  FUNCTION:  RBDEnumerate */
-/**/
-/*    INPUTS:  tree is the tree to look for keys >= low */
-/*             and <= high with respect to the Compare function */
-/**/
-/*    OUTPUT:  stack containing pointers to the nodes between [low,high] */
-/**/
-/*    Modifies Input: none */
-/***********************************************************************/
-/*
-stk_stack* RBEnumerate(rb_red_blk_tree* tree, void* low, void* high) {
-	stk_stack* enumResultStack;
-	rb_red_blk_node* nil=tree->nil;
-	rb_red_blk_node* x=tree->root->left;
-	rb_red_blk_node* lastBest=nil;
-
-	enumResultStack=StackCreate();
-	while(nil != x) {
-		if ( 1 == (tree->Compare(x->key,high)) ) { /* x->key > high */ /*
-			x=x->left;
-		} else {
-			lastBest=x;
-			x=x->right;
-		}
-	}
-	while ( (lastBest != nil) && (1 != tree->Compare(low,lastBest->key))) {
-		StackPush(enumResultStack,lastBest);
-		lastBest=TreePredecessor(tree,lastBest);
-	}
-	return(enumResultStack);
-}
-*/
-
-
-
-
-
-

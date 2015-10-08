@@ -9,3 +9,11 @@ VTStarFastTiesRCPP <- function(xNumeric, yNumeric) {
     .Call('TauStar_VTStarFastTiesRCPP', PACKAGE = 'TauStar', xNumeric, yNumeric)
 }
 
+TStarFastResampleRCPP <- function(xNumeric, yNumeric, numResamples, sampleSize) {
+    .Call('TauStar_TStarFastResampleRCPP', PACKAGE = 'TauStar', xNumeric, yNumeric, numResamples, sampleSize)
+}
+
+TStarSlowTiesRCPP <- function(x, y, vStat) {
+    .Call('TauStar_TStarSlowTiesRCPP', PACKAGE = 'TauStar', x, y, vStat)
+}
+
