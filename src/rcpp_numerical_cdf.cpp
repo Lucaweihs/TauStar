@@ -90,52 +90,6 @@ std::complex<double> asymCharFunction(double t, double maxError) {
   return(exp(sum));
 }
 
-class RiemannInt {
-public:
-  double lower;
-  double upper;
-  double funcError;
-  std::complex<double> lowerEval;
-  std::complex<double> upperEval;
-
-  RiemannInt(double l, double u,
-             std::complex<double> eval, bool isLowerEval,
-             double errFromFunc) {
-    lower = l;
-    upper = u;
-    if (isLowerEval) {
-      lowerEval = eval;
-      upperEval = asymCharFunction(u, errFromFunc / 2.0);
-    } else {
-      lowerEval = asymCharFunction(l, errFromFunc / 2.0);
-      upperEval = eval;
-    }
-    funcError = errFromFunc;
-  }
-
-  RiemannInt(double l, double u, double errFromFunc) {
-    lower = l;
-    upper = u;
-    lowerEval = asymCharFunction(l, errFromFunc / 2.0);
-    upperEval = asymCharFunction(u, errFromFunc / 2.0);
-    funcError = errFromFunc;
-  }
-
-  double width() {
-    return upper - lower;
-  }
-
-  RiemannInt splitLower() {
-    RiemannInt ri(lower, (upper - lower) / 2 + lower, lowerEval, true, funcError);
-    return ri;
-  }
-
-  RiemannInt splitUpper() {
-    RiemannInt ri((upper - lower) / 2 + lower, upper, upperEval, false, funcError);
-    return ri;
-  }
-};
-
 std::complex<double> asymCdfIntegrand(double x, double t, double maxError) {
   std::complex<double> val;
   std::complex<double> i(0, 1);
