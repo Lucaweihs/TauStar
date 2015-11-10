@@ -1,7 +1,7 @@
 Package: TauStar
 Type: Package
 Title: Efficient Computation of the t* Statistic of Bergsma and Dassios (2014)
-Version: 1.0.0
+Version: 1.0.1
 Date: 2015-9-30
 Authors@R: c(person("Luca", "Weihs", email="lucaw@uw.edu", role=c("aut", "cre")),
             person("Emin", "Martinian", role=c("ctb"), comment="Created the red-black tree library included in package."))
