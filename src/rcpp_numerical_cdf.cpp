@@ -23,6 +23,7 @@
 #include<RcppArmadillo.h>
 //#include<stdio.h>
 //#include<ctype.h>
+#include<algorithm>
 #include<math.h>
 #include<queue>
 
@@ -36,25 +37,61 @@ std::complex<double> sinhProd(std::complex<double> v, int i) {
 }
 
 //[[Rcpp::export]]
-double hurwitzZeta(double exponent, double offset, int sumLength) {
-  return(
-    arma::accu(
-      1.0 / arma::pow(offset + arma::linspace<arma::vec>(0, sumLength, sumLength + 1),
-                    exponent))
+double hurwitzZeta(double exponent, double offset, double maxError) {
+  double maxSumLength = pow(2, 27);
+  double sumLengthAsDouble = fmax(
+    ceil(pow(maxError, -1.0 / exponent)) - floor(offset) - 1, 15.0
   );
+  int sumLength = (sumLengthAsDouble > maxSumLength) ? maxSumLength : sumLengthAsDouble;
+  if (sumLengthAsDouble > maxSumLength) {
+    Rprintf("WARNING: computation of hurwitz zeta may not provide desired level of accuracy.\n");
+  }
+  long double sum = 0;
+  for (int i = 0; i <= sumLength; i++) {
+    sum += 1.0 / pow(offset + i, exponent);
+  }
+  long double tailInt = (exponent - 1) * 1.0 / pow(sumLength + offset + 1, exponent - 1);
+  return sum + tailInt;
 }
 
 //[[Rcpp::export]]
-double aCoef(int k, int h) {
+double aCoef(int k, int h, double maxError) {
+  double maxHurZeta = 1.0 / ((2 * k - 1) * pow(h - 1, 2 * k - 1));
+  double maxErrorForHurZeta = -maxHurZeta +
+    (1 / 2.0) * sqrt(4 * maxHurZeta * maxHurZeta + 8 * k * maxError);
   int sign = (k % 2 == 0) ? 1 : -1;
-  return(sign * std::pow(hurwitzZeta(2 * k, h, 10000), 2.0) / (2 * k));
+  return(sign * std::pow(hurwitzZeta(2 * k, h, maxErrorForHurZeta), 2.0) / (2 * k));
 }
 
 //[[Rcpp::export]]
-std::complex<double> tailSum(std::complex<double> v, int h, int sumLength) {
+std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   std::complex<double> sum = 0;
+  std::complex<double> vProd = 1;
+  double absV = abs(v);
+
+  // Half of the max error comes from truncating the summation
+  double factor = absV / pow(h, 4.0);
+  int sumLength;
+  if (factor >= 1) {
+    Rprintf("WARNING: h chosen for tailSum is too small and may not result in inaccuracies. Choose h so that |v|/h^4 < 1 (best if < 1/2).");
+    sumLength = 100;
+  } else {
+    sumLength = fmax(
+      ceil((-log(maxError / 2.0) +
+        4 * log(h) +
+        2 * log(M_PI * (6 * h - 5) / pow(6 * (1 - 2 * h), 2))) / (-log(factor))) + 2,
+      10);
+  }
+
+  // The second half of the error comes from approximating the a coefficients
+  // in the summation. we want 1/4 the error from the first term, 1/8 for the
+  // second, 1/16 from the third, ... This follows the empirical observation
+  // that attaining small error rates from the first term takes many many terms.
+  double maxErrorForA = maxError / 2;
   for(int i = 1; i <= sumLength; i++) {
-    sum += aCoef(i,h) * pow(v, i);
+    vProd *= v;
+    maxErrorForA /= 2.0 * absV;
+    sum += aCoef(i, h, maxErrorForA) * vProd;
   }
   return sum;
 }
@@ -76,17 +113,12 @@ std::complex<double> asymCharFunction(double t, double maxError) {
     return 1;
   }
   std::complex<double> v(0, 36 * (-2.0 * t) / pow(M_PI, 4.0));
-  int h = ceil(pow(2.0 * abs(v), 1/4)) + 2;
-  int l = ceil(
-    -log2(maxError) +
-      4 * log2(h) +
-      2 * log2(M_PI * (6 * h - 5) / pow(6 * (1 - 2 * h), 2))
-    ) + 2;
+  int h = ceil(pow(2.0 * abs(v), 1.0 / 4.0)) + 2;
   std::complex<double> sum = -gridSum(v, h - 1);
   for (int i = 1; i <= h - 1; i++) {
     sum += 2.0 * log(sinhProd(v, i));
   }
-  sum += tailSum(v, h, l);
+  sum += tailSum(v, h, maxError / abs(exp(sum)));
   return(exp(sum));
 }
 
@@ -96,17 +128,31 @@ std::complex<double> asymCdfIntegrand(double x, double t, double maxError) {
   if (t == 0) {
     val = x;
   } else {
-    val = asymCharFunction(t, maxError) * (1.0 - exp(-i * t * x)) / (i * t);
+    val = asymCharFunction(t, maxError * t / 2.0) * (1.0 - exp(-i * t * x)) / (i * t);
+  }
+  return val / (2.0 * M_PI);
+}
+
+std::complex<double> asymPdfIntegrand(double x, double t, double maxError) {
+  std::complex<double> val;
+  std::complex<double> i(0, 1);
+  if (t == 0) {
+    val = x;
+  } else {
+    val = asymCharFunction(t, maxError * t / 2.0) * exp(-i * t * x);
   }
   return val / (2.0 * M_PI);
 }
 
 //[[Rcpp::export]]
 double asymCdf(double x, double maxError) {
+  if (x <= 0) {
+    return 0;
+  }
   double T = 215.0; // TODO: hardcoded for now
-  double integrandError = pow(10.0, -16);
+  double integrandError = maxError * .0001;
 
-  int numInts = 200;
+  int numInts = 500;
   double intWidth = T / numInts;
   std::vector<double> oldVec(numInts);
   double intVal = 0;
@@ -123,7 +169,10 @@ double asymCdf(double x, double maxError) {
   double oldIntVal = std::numeric_limits<double>::infinity();
 
   int k = 0;
-  while(fabs(intVal / oldIntVal - 1) > maxError * 0.1 && k++ < 1){
+  //while (fabs(intVal / oldIntVal - 1) > maxError) {
+  while (fabs(intVal - oldIntVal) > maxError) {
+    printf("k=%d\n", k);
+    printf("intVal=%f\n", oldIntVal);
     oldIntVal = intVal;
     intVal = 0;
     numInts *= 2;
@@ -139,11 +188,67 @@ double asymCdf(double x, double maxError) {
     }
     intVal *= intWidth;
     oldVec = newVec;
+    if (k++ == 5) {
+      Rprintf("WARNING: convergence criteria not met for asymptotic cdf computation.\n");
+      break;
+    }
   }
 
   return intVal;
 }
 
+//[[Rcpp::export]]
+double asymPdf(double x, double maxError) {
+  if (x <= 0) {
+    return 0;
+  }
+  double T = 100.0; // TODO: hardcoded for now
+  double integrandError = maxError * .0001;
+
+  int numInts = 1000;
+  double intWidth = T / numInts;
+  std::vector<double> oldVec(numInts);
+  double intVal = 0;
+  for (int j = 0; j < numInts; j++) {
+    if (j == 0) {
+      oldVec[j] = asymPdfIntegrand(x, j * intWidth, integrandError).real();
+    } else {
+      oldVec[j] = 2.0 * asymPdfIntegrand(x, j * intWidth, integrandError).real();
+    }
+    intVal += oldVec[j];
+  }
+  intVal *= intWidth;
+
+  double oldIntVal = std::numeric_limits<double>::infinity();
+
+  int k = 0;
+  //while (fabs(intVal / oldIntVal - 1) > maxError) {
+  while (fabs(intVal - oldIntVal) > maxError) {
+    printf("k=%d\n", k);
+    printf("intVal=%f\n", oldIntVal);
+    oldIntVal = intVal;
+    intVal = 0;
+    numInts *= 2;
+    intWidth /= 2;
+    std::vector<double> newVec(numInts);
+    for(int j = 0; j < numInts; j++) {
+      if (j % 2 == 0) {
+        newVec[j] = oldVec[j / 2];
+      } else {
+        newVec[j] = 2.0 * asymPdfIntegrand(x, j * intWidth, integrandError).real();
+      }
+      intVal += newVec[j];
+    }
+    intVal *= intWidth;
+    oldVec = newVec;
+    if (k++ == 5) {
+      Rprintf("WARNING: convergence criteria not met for asymptotic pdf computation.\n");
+      break;
+    }
+  }
+
+  return intVal;
+}
 
 
 
