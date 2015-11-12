@@ -21,8 +21,6 @@
  */
 
 #include<RcppArmadillo.h>
-//#include<stdio.h>
-//#include<ctype.h>
 #include<algorithm>
 #include<math.h>
 #include<queue>
@@ -30,13 +28,11 @@
 using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
 
-//[[Rcpp::export]]
 std::complex<double> sinhProd(std::complex<double> v, int i) {
   std::complex<double> a = M_PI * pow(v, 0.5) / (1.0 * i);
   return(pow(sinh(a) / a, -.5));
 }
 
-//[[Rcpp::export]]
 double hurwitzZeta(double exponent, double offset, double maxError) {
   double maxSumLength = pow(2, 27);
   double sumLengthAsDouble = fmax(
@@ -54,7 +50,6 @@ double hurwitzZeta(double exponent, double offset, double maxError) {
   return sum + tailInt;
 }
 
-//[[Rcpp::export]]
 double aCoef(int k, int h, double maxError) {
   double maxHurZeta = 1.0 / ((2 * k - 1) * pow(h - 1, 2 * k - 1));
   double maxErrorForHurZeta = -maxHurZeta +
@@ -63,7 +58,6 @@ double aCoef(int k, int h, double maxError) {
   return(sign * std::pow(hurwitzZeta(2 * k, h, maxErrorForHurZeta), 2.0) / (2 * k));
 }
 
-//[[Rcpp::export]]
 std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   std::complex<double> sum = 0;
   std::complex<double> vProd = 1;
@@ -96,7 +90,6 @@ std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   return sum;
 }
 
-//[[Rcpp::export]]
 std::complex<double> gridSum(std::complex<double> v, int sideLen) {
   std::complex<double> sum = 0;
   for(int i = 1; i <= sideLen; i++) {
@@ -107,7 +100,6 @@ std::complex<double> gridSum(std::complex<double> v, int sideLen) {
   return(sum);
 }
 
-//[[Rcpp::export]]
 std::complex<double> asymCharFunction(double t, double maxError) {
   if(t == 0) {
     return 1;
@@ -145,7 +137,7 @@ std::complex<double> asymPdfIntegrand(double x, double t, double maxError) {
 }
 
 //[[Rcpp::export]]
-double asymCdf(double x, double maxError) {
+double HoeffIndCdfRCPP(double x, double maxError) {
   if (x <= 0) {
     return 0;
   }
@@ -171,8 +163,8 @@ double asymCdf(double x, double maxError) {
   int k = 0;
   //while (fabs(intVal / oldIntVal - 1) > maxError) {
   while (fabs(intVal - oldIntVal) > maxError) {
-    printf("k=%d\n", k);
-    printf("intVal=%f\n", oldIntVal);
+    //printf("k=%d\n", k);
+    //printf("intVal=%f\n", oldIntVal);
     oldIntVal = intVal;
     intVal = 0;
     numInts *= 2;
@@ -198,7 +190,7 @@ double asymCdf(double x, double maxError) {
 }
 
 //[[Rcpp::export]]
-double asymPdf(double x, double maxError) {
+double HoeffIndPdfRCPP(double x, double maxError) {
   if (x <= 0) {
     return 0;
   }
@@ -222,10 +214,7 @@ double asymPdf(double x, double maxError) {
   double oldIntVal = std::numeric_limits<double>::infinity();
 
   int k = 0;
-  //while (fabs(intVal / oldIntVal - 1) > maxError) {
   while (fabs(intVal - oldIntVal) > maxError) {
-    printf("k=%d\n", k);
-    printf("intVal=%f\n", oldIntVal);
     oldIntVal = intVal;
     intVal = 0;
     numInts *= 2;
@@ -246,8 +235,48 @@ double asymPdf(double x, double maxError) {
       break;
     }
   }
-
   return intVal;
+}
+
+// [[Rcpp::export]]
+std::vector<std::complex<double> > eigenForDiscreteProbs(arma::vec p) {
+  arma::vec cdf(p.size());
+  arma::vec q(p.size());
+  arma::vec q1(p.size());
+  cdf[0] = p[0];
+  q[0] = p[0] * cdf[0];
+  for (int i = 1; i < p.size(); i++) {
+    cdf[i] = cdf[i - 1] + p[i];
+    q[i] = q[i-1] + p[i] * cdf[i];
+  }
+  q1[0] = p[0] * (1 - cdf[0]);
+  for (int i = 1; i < p.size(); i++) {
+    q1[i] = q1[i-1] + p[i] * (1 - cdf[i]);
+  }
+
+  arma::mat symMat(p.size(), p.size());
+  for(int i = 0; i < p.size(); i++) {
+    for(int j = i; j < p.size(); j++) {
+      if (i == 0) {
+        symMat(i,j) = -(1 - cdf[j]) * (1 - cdf[j]);
+      } else {
+        symMat(i,j) = -(1 - cdf[j]) * (1 - cdf[j]) - cdf[i-1] * cdf[i-1];
+      }
+
+      if (i != j) {
+        symMat(i,j) += cdf[i] * (1 - cdf[i]) + (q1[j-1] - q1[i]);
+        symMat(j,i) = symMat(i,j);
+        symMat(j,i) *= p[i];
+      }
+      symMat(i,j) *= p[j];
+    }
+  }
+  arma::Col<std::complex<double> > eigenVals = arma::eig_gen(symMat);
+  std::vector<std::complex<double> > eigenValsVec(eigenVals.size());
+  for (int i = 0; i < eigenVals.size(); i++) {
+    eigenValsVec[i] = eigenVals[i];
+  }
+  return eigenValsVec;
 }
 
 
