@@ -56,3 +56,143 @@ tStar <- function(x, y, vStatistic = FALSE, resample = FALSE,
     return(TStarFastTiesRCPP(x, y))
   }
 }
+
+qHoeffInd <- function(x) {
+  if (x == 0) {
+    return(-1)
+  }
+  if (x == 1) {
+    return(Inf)
+  }
+  binarySearch = function(x, lastLeft, lastRight, error = 10^-4) {
+    mid = (lastLeft + lastRight) / 2
+    pMid = pHoeffInd(mid)
+    if (lastRight - lastLeft < error) {
+      return(mid)
+    } else if(pMid > x) {
+      return(binarySearch(x, lastLeft, mid, error))
+    } else {
+     return(binarySearch(x, mid, lastRight, error))
+    }
+  }
+  right = 1
+  while(pHoeffInd(right) < x) {
+    right = right * 2
+  }
+  return(binarySearch(x, -1, right))
+}
+
+rHoeffInd <- function(n) {
+  sims = numeric(n)
+  for(i in 1:50) {
+    for(j in 1:50) {
+      sims = sims + (36 / pi^4) * (1 / (i^2 * j^2)) * (rchisq(n, df=1) - 1)
+    }
+  }
+  return(sims)
+}
+
+pHoeffInd <- function(x, error = 10^-5) {
+  if (length(x) != 1) {
+    return(sapply(x, function(y) { HoeffIndCdfRCPP(y + 1, error) }))
+  }
+  return(HoeffIndCdfRCPP(x + 1, error))
+}
+
+dHoeffInd <- function(x, error = 1/2 * 10^-3) {
+  if (length(x) != 1) {
+    return(sapply(x, function(y) { HoeffIndPdfRCPP(y + 1, error) }))
+  }
+  HoeffIndPdfRCPP(x + 1, error)
+}
+
+pDisHoeffInd <- function(x, p, q, error = 10^-5) {
+  eigenP = eigenForDiscreteProbs(p)
+  eigenQ = eigenForDiscreteProbs(q)
+  return(HoeffIndDiscreteCdfRCPP(x + 4 * sum(eigenP) * sum(eigenQ),
+                                 eigenP,
+                                 eigenQ,
+                                 error))
+}
+
+dDisHoeffInd <- function(x, p, q, error = 10^-3) {
+  eigenP = eigenForDiscreteProbs(p)
+  eigenQ = eigenForDiscreteProbs(q)
+  return(HoeffIndDiscretePdfRCPP(x + 4 * sum(eigenP) * sum(eigenQ),
+                                 eigenP,
+                                 eigenQ,
+                                 error))
+}
+
+rDisHoeffInd <- function(n, p, q) {
+  eigenP = eigenForDiscreteProbs(p)
+  eigenQ = eigenForDiscreteProbs(q)
+  asymResults = numeric(asymSims)
+  for(i in 1:length(eigenP)) {
+    for(j in 1:length(eigenQ)) {
+      asymResults = asymResults + 4 * eigenP[i] * eigenQ[j] * (rchisq(n, df=1) - 1)
+    }
+  }
+  return(asymResults)
+}
+
+print.tstest <- function(tsObj) {
+  if (tsObj$mode %in% c("continuous", "discrete")) {
+    cat(paste("Test Type: asymptotic", tsObj$mode, "\n"))
+  } else {
+    cat(paste("Test Type: permutation (", tsObj$resamples," simulations)\n", sep=""))
+  }
+  cat(paste("Input Length:", length(tsObj$x), "\n\n"))
+
+  cat(paste("Results:\n"))
+  df = data.frame(round(tsObj$tStar, 5))
+  if (tsObj$mode %in% c("continuous", "discrete")) {
+    df = cbind(df, round(tsObj$pVal, 5))
+    colnames(df) = c("t* value", "Asym. p-val")
+  } else {
+    df = cbind(df, round(tsObj$permPVal, 5))
+    colnames(df) = c("t* value", "Perm. p-val")
+  }
+  row.names(df) = ""
+  print(df)
+}
+
+tauStarTest <- function(x, y, mode="continuous", resamples = 1000) {
+  uniqueX = unique(x)
+  uniqueY = unique(y)
+
+  toReturn = list()
+  class(toReturn) = "tstest"
+  toReturn$mode = mode
+  toReturn$x = x
+  toReturn$y = y
+  toReturn$tStar = tStar(x, y)
+  toReturn$resamples = resamples
+
+  n = length(x)
+  if (mode == "continuous") {
+    if (length(uniqueX) != length(x) || length(uniqueY) != length(y)) {
+      stop("Input vectors to tauStarTest have duplicates (repeated entries) while the mode is set to continuous.")
+    }
+    toReturn$pVal = 1 - pHoeffInd(n * toReturn$tStar)
+
+  } else if (mode == "discrete") {
+    p = as.numeric(table(x)) / n
+    q = as.numeric(table(y)) / n
+    toReturn$pVal = 1 - pDisHoeffInd(n * toReturn$tStar, p=p, q=q)
+
+  } else if (mode == "permutation") {
+    sampleTStars = numeric(resamples)
+    for (i in 1:resamples) {
+      sampleTStars[i] = tStar(sample(x), y)
+    }
+    toReturn$permPVal = mean(sampleTStars >= toReturn$tStar)
+  } else {
+    stop("Invalid mode as input to tauStarTest.")
+  }
+  return(toReturn)
+}
+
+
+
+
