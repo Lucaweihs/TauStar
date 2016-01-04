@@ -16,9 +16,9 @@
  */
 
 /***
- * A collection of functions that implement the main functionality of the
- * algorithms described in
- */
+* A collection of functions that implement the main functionality of the
+* algorithms described in
+*/
 
 #include<RcppArmadillo.h>
 #include<algorithm>
@@ -28,9 +28,12 @@
 using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
 
+/***
+ * Computes
+ */
 std::complex<double> sinhProd(std::complex<double> v, int i) {
-  std::complex<double> a = M_PI * pow(v, 0.5) / (1.0 * i);
-  return(pow(sinh(a) / a, -.5));
+  std::complex<double> a = M_PI * sqrt(v) / (1.0 * i);
+  return(sqrt(a / sinh(a)));
 }
 
 double hurwitzZeta(double exponent, double offset, double maxError) {
@@ -74,7 +77,7 @@ std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
       ceil((-log(maxError / 2.0) +
         4 * log(h) +
         2 * log(M_PI * (6 * h - 5) / pow(6 * (1 - 2 * h), 2))) / (-log(factor))) + 2,
-      10);
+        10);
   }
 
   // The second half of the error comes from approximating the a coefficients
@@ -148,11 +151,12 @@ public:
 };
 
 double numericalCfInversion(
-   IntegrandEvaluator* intEval,
-   double x,
-   double T,
-   double convCrit
-  ) {
+    IntegrandEvaluator* intEval,
+    double x,
+    double T,
+    double convCrit,
+    int maxIter
+) {
   if (x <= 0) {
     return 0;
   }
@@ -191,7 +195,8 @@ double numericalCfInversion(
     }
     intVal *= intWidth;
     oldVec = newVec;
-    if (k++ == 7) {
+    //Rprintf("Error: %f Int val: %f\n", fabs(intVal - oldIntVal), intVal);
+    if (k++ == maxIter) {
       Rprintf("WARNING: convergence criteria not met for characteristic function inversion.\n");
       break;
     }
@@ -205,7 +210,7 @@ arma::vec HoeffIndCdfRCPP(arma::vec x, double maxError) {
   AsymCdfIntegrandEvaluator acie;
   arma::vec pdfVals(x.size());
   for (int i = 0; i < x.size(); i++) {
-    pdfVals[i] = fmin(fmax(numericalCfInversion((IntegrandEvaluator*) &acie, x[i], 215.0, maxError), 0), 1); // TODO: 215.0 hardcoded for now
+    pdfVals[i] = fmin(fmax(numericalCfInversion((IntegrandEvaluator*) &acie, x[i], 215.0, maxError, 7), 0), 1); // TODO: 215.0 hardcoded for now
   }
   return pdfVals;
 }
@@ -215,7 +220,7 @@ arma::vec HoeffIndPdfRCPP(arma::vec x, double maxError) {
   AsymPdfIntegrandEvaluator apie;
   arma::vec pdfVals(x.size());
   for (int i = 0; i < x.size(); i++) {
-    pdfVals[i] = fmax(numericalCfInversion((IntegrandEvaluator*) &apie, x[i], 100.0, maxError), 0); // TODO: 100.0 hardcoded for now
+    pdfVals[i] = fmax(numericalCfInversion((IntegrandEvaluator*) &apie, x[i], 100.0, maxError, 7), 0); // TODO: 100.0 hardcoded for now
   }
   return pdfVals;
 }
@@ -265,7 +270,7 @@ public:
 
   std::complex<double> integrand(double x, double t, double maxError) {
     if (t == 0) {
-      return x;
+      return x / (2 * M_PI);
     }
     std::complex<double> val;
     std::complex<double> I(0, 1);
@@ -292,7 +297,7 @@ public:
 
   std::complex<double> integrand(double x, double t, double maxError) {
     if (t == 0) {
-      return x;
+      return x / (2 * M_PI);
     }
     std::complex<double> val;
     std::complex<double> I(0, 1);
@@ -313,7 +318,7 @@ arma::vec HoeffIndDiscreteCdfRCPP(arma::vec x, arma::vec eigenP, arma::vec eigen
   AsymDiscreteCdfIntegrandEvaluator adcie(eigenP, eigenQ);
   arma::vec cdfVals(x.size());
   for (int i = 0; i < x.size(); i++) {
-    cdfVals[i] = fmin(fmax(numericalCfInversion((IntegrandEvaluator*) &adcie, x[i], 215.0, maxError), 0), 1);
+    cdfVals[i] = fmin(fmax(numericalCfInversion((IntegrandEvaluator*) &adcie, x[i], 215.0, maxError, 7), 0), 1);
   }
   return cdfVals;
 }
@@ -324,11 +329,117 @@ arma::vec HoeffIndDiscretePdfRCPP(arma::vec x, arma::vec eigenP, arma::vec eigen
   AsymDiscretePdfIntegrandEvaluator adpie(eigenP, eigenQ);
   arma::vec pdfVals(x.size());
   for (int i = 0; i < x.size(); i++) {
-    pdfVals[i] = fmax(numericalCfInversion((IntegrandEvaluator*) &adpie, x[i], 100.0, maxError), 0);
+    pdfVals[i] = fmax(numericalCfInversion((IntegrandEvaluator*) &adpie, x[i], 100.0, maxError, 7), 0);
   }
   return pdfVals;
 }
 
+class AsymMixedCdfIntegrandEvaluator : public IntegrandEvaluator {
+protected:
+  arma::vec eigenP;
+
+public:
+  AsymMixedCdfIntegrandEvaluator(arma::vec eigP) {
+    eigenP = eigP;
+  }
+  static int piRemSign(double x) {
+    if (x == 0) {
+      return 0;
+    } else if (x > 0) {
+      return (fmod(x, 2 * M_PI) <= M_PI) ? 1 : -1;
+    } else {
+      return (fmod(x, 2 * M_PI) >= -M_PI) ? 1 : -1;
+    }
+  }
+
+  static int getSinhSign(double rate) {
+    int j = 0;
+    double sum = 0;
+    double remainder = 0.5 * rate * M_PI * M_PI / 6.0;
+    while (fabs(remainder) >= M_PI || (piRemSign(sum) != piRemSign(sum + remainder))) {
+      j++;
+      double v = rate / ((1.0 * j) * j);
+      sum += 0.5 * asin(v / sqrt(1 + v * v));
+      remainder -= 0.5 * v;
+      if (j % 10000 == 0) {
+        break;
+      }
+    }
+    return piRemSign(sum);
+  }
+
+  std::complex<double> integrand(double x, double t, double maxError) {
+    if (t == 0) {
+      return x / (2 * M_PI);
+    }
+    std::complex<double> val;
+    std::complex<double> I(0, 1);
+
+    std::complex<double> sum = 0;
+    std::complex<double> v(0, 12.0 * (-2.0 * t) / (M_PI * M_PI));
+    double precision = pow(10, -15);
+    for(int i = 0; i < eigenP.size() && fabs(eigenP[i]) > precision; i++) {
+      int sign = getSinhSign((v * (-eigenP[i])).imag());
+      std::complex<double> sinhProdVal = sinhProd(v * (-eigenP[i]), 1);
+      if (sinhProdVal.imag() * sign <= 0) {
+        sinhProdVal *= -1;
+      }
+      sum += log(sinhProdVal);
+    }
+    return 1 / (2 * M_PI) * exp(sum) * (1.0 - exp(-I * t * x)) / (I * t);
+  }
+};
+
+class AsymMixedPdfIntegrandEvaluator : public IntegrandEvaluator {
+protected:
+  arma::vec eigenP;
+
+public:
+  AsymMixedPdfIntegrandEvaluator(arma::vec eigP) {
+    eigenP = eigP;
+  }
+
+  std::complex<double> integrand(double x, double t, double maxError) {
+    if (t == 0) {
+      return x / (2 * M_PI);
+    }
+    std::complex<double> val;
+    std::complex<double> I(0, 1);
+
+    std::complex<double> sum = 0;
+    std::complex<double> v(0, 12.0 * (-2.0 * t) / (M_PI * M_PI));
+    double precision = pow(10, -15);
+    for(int i = 0; i < eigenP.size() && fabs(eigenP[i]) > precision; i++) {
+      int sign = AsymMixedCdfIntegrandEvaluator::getSinhSign((v * (-eigenP[i])).imag());
+      std::complex<double> sinhProdVal = sinhProd(v * (-eigenP[i]), 1);
+      if (sinhProdVal.imag() * sign <= 0) {
+        sinhProdVal *= -1;
+      }
+      sum += log(sinhProdVal);
+    }
+    return 1 / (2 * M_PI) * exp(sum) * exp(-I * t * x);
+  }
+};
+
+// [[Rcpp::export]]
+arma::vec HoeffIndMixedCdfRCPP(arma::vec x, arma::vec eigenP, double maxError) {
+  AsymMixedCdfIntegrandEvaluator amcie(eigenP);
+  arma::vec cdfVals(x.size());
+  for (int i = 0; i < x.size(); i++) {
+    cdfVals[i] = fmin(fmax(numericalCfInversion((IntegrandEvaluator*) &amcie, x[i], 215.0, maxError, 10), 0), 1);
+  }
+  return cdfVals;
+}
+
+// [[Rcpp::export]]
+arma::vec HoeffIndMixedPdfRCPP(arma::vec x, arma::vec eigenP, double maxError) {
+  AsymMixedPdfIntegrandEvaluator ampie(eigenP);
+  arma::vec pdfVals(x.size());
+  for (int i = 0; i < x.size(); i++) {
+    pdfVals[i] = fmax(numericalCfInversion((IntegrandEvaluator*) &ampie, x[i], 215.0, maxError, 10), 0);
+  }
+  return pdfVals;
+}
 
 
 

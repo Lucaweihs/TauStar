@@ -6,6 +6,95 @@
 
 using namespace Rcpp;
 
+// HoeffIndCdfRCPP
+arma::vec HoeffIndCdfRCPP(arma::vec x, double maxError);
+RcppExport SEXP TauStar_HoeffIndCdfRCPP(SEXP xSEXP, SEXP maxErrorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type maxError(maxErrorSEXP);
+    __result = Rcpp::wrap(HoeffIndCdfRCPP(x, maxError));
+    return __result;
+END_RCPP
+}
+// HoeffIndPdfRCPP
+arma::vec HoeffIndPdfRCPP(arma::vec x, double maxError);
+RcppExport SEXP TauStar_HoeffIndPdfRCPP(SEXP xSEXP, SEXP maxErrorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type maxError(maxErrorSEXP);
+    __result = Rcpp::wrap(HoeffIndPdfRCPP(x, maxError));
+    return __result;
+END_RCPP
+}
+// eigenForDiscreteProbs
+arma::vec eigenForDiscreteProbs(arma::vec p);
+RcppExport SEXP TauStar_eigenForDiscreteProbs(SEXP pSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type p(pSEXP);
+    __result = Rcpp::wrap(eigenForDiscreteProbs(p));
+    return __result;
+END_RCPP
+}
+// HoeffIndDiscreteCdfRCPP
+arma::vec HoeffIndDiscreteCdfRCPP(arma::vec x, arma::vec eigenP, arma::vec eigenQ, double maxError);
+RcppExport SEXP TauStar_HoeffIndDiscreteCdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type eigenP(eigenPSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type eigenQ(eigenQSEXP);
+    Rcpp::traits::input_parameter< double >::type maxError(maxErrorSEXP);
+    __result = Rcpp::wrap(HoeffIndDiscreteCdfRCPP(x, eigenP, eigenQ, maxError));
+    return __result;
+END_RCPP
+}
+// HoeffIndDiscretePdfRCPP
+arma::vec HoeffIndDiscretePdfRCPP(arma::vec x, arma::vec eigenP, arma::vec eigenQ, double maxError);
+RcppExport SEXP TauStar_HoeffIndDiscretePdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type eigenP(eigenPSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type eigenQ(eigenQSEXP);
+    Rcpp::traits::input_parameter< double >::type maxError(maxErrorSEXP);
+    __result = Rcpp::wrap(HoeffIndDiscretePdfRCPP(x, eigenP, eigenQ, maxError));
+    return __result;
+END_RCPP
+}
+// HoeffIndMixedCdfRCPP
+arma::vec HoeffIndMixedCdfRCPP(arma::vec x, arma::vec eigenP, double maxError);
+RcppExport SEXP TauStar_HoeffIndMixedCdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type eigenP(eigenPSEXP);
+    Rcpp::traits::input_parameter< double >::type maxError(maxErrorSEXP);
+    __result = Rcpp::wrap(HoeffIndMixedCdfRCPP(x, eigenP, maxError));
+    return __result;
+END_RCPP
+}
+// HoeffIndMixedPdfRCPP
+arma::vec HoeffIndMixedPdfRCPP(arma::vec x, arma::vec eigenP, double maxError);
+RcppExport SEXP TauStar_HoeffIndMixedPdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type eigenP(eigenPSEXP);
+    Rcpp::traits::input_parameter< double >::type maxError(maxErrorSEXP);
+    __result = Rcpp::wrap(HoeffIndMixedPdfRCPP(x, eigenP, maxError));
+    return __result;
+END_RCPP
+}
 // TStarFastTiesRCPP
 Rcpp::NumericVector TStarFastTiesRCPP(NumericVector xNumeric, NumericVector yNumeric);
 RcppExport SEXP TauStar_TStarFastTiesRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {

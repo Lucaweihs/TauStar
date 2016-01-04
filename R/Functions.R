@@ -136,9 +136,37 @@ rDisHoeffInd <- function(n, p, q) {
   return(asymResults)
 }
 
+pMixHoeffInd <- function(x, p, error = 10^-6) {
+  eigenP = eigenForDiscreteProbs(p)
+  return(HoeffIndMixedCdfRCPP(x - 2 * sum(eigenP),
+                                 eigenP,
+                                 error))
+}
+
+dMixHoeffInd <- function(x, p, error = 10^-3) {
+  eigenP = eigenForDiscreteProbs(p)
+  return(HoeffIndMixedPdfRCPP(x - 2 * sum(eigenP),
+                              eigenP,
+                              error))
+}
+
+rMixHoeffInd <- function(n, p, error = 10^-8) {
+  eigenP = eigenForDiscreteProbs(p)
+  top = ceiling((sum((12 / pi^2 * eigenP)^2) / (3 * error))^(1/3) + 1)
+  sims = numeric(n)
+  for(lambda in eigenP) {
+    for(i in 1:top) {
+      sims = sims + (12 / pi^2) * (-lambda)/i^2 * (rchisq(asymSims, df=1) - 1)
+    }
+  }
+  return(sims)
+}
+
 print.tstest <- function(tsObj) {
-  if (tsObj$mode %in% c("continuous", "discrete")) {
+  asymTest = F
+  if (tsObj$mode %in% c("continuous", "discrete", "mixed")) {
     cat(paste("Test Type: asymptotic", tsObj$mode, "\n"))
+    asymTest = T
   } else {
     cat(paste("Test Type: permutation (", tsObj$resamples," simulations)\n", sep=""))
   }
@@ -146,7 +174,7 @@ print.tstest <- function(tsObj) {
 
   cat(paste("Results:\n"))
   df = data.frame(round(tsObj$tStar, 5))
-  if (tsObj$mode %in% c("continuous", "discrete")) {
+  if (asymTest) {
     df = cbind(df, round(tsObj$pVal, 5))
     colnames(df) = c("t* value", "Asym. p-val")
   } else {
@@ -157,9 +185,16 @@ print.tstest <- function(tsObj) {
   print(df)
 }
 
-tauStarTest <- function(x, y, mode="continuous", resamples = 1000) {
-  uniqueX = unique(x)
-  uniqueY = unique(y)
+isDiscrete = function(x) {
+  if (is.integer(x) || (length(unique(x)) != length(x))) {
+    return(T)
+  }
+  return(F)
+}
+
+tauStarTest <- function(x, y, mode="auto", resamples = 1000) {
+  xIsDis = isDiscrete(x)
+  yIsDis = isDiscrete(y)
 
   toReturn = list()
   class(toReturn) = "tstest"
@@ -171,8 +206,8 @@ tauStarTest <- function(x, y, mode="continuous", resamples = 1000) {
 
   n = length(x)
   if (mode == "continuous") {
-    if (length(uniqueX) != length(x) || length(uniqueY) != length(y)) {
-      stop("Input vectors to tauStarTest have duplicates (repeated entries) while the mode is set to continuous.")
+    if (xIsDis || yIsDis) {
+      stop("Input vectors to tauStarTest are have repeated entries or are of the integer type but the mode is set to continuous.")
     }
     toReturn$pVal = 1 - pHoeffInd(n * toReturn$tStar)
 
@@ -181,6 +216,20 @@ tauStarTest <- function(x, y, mode="continuous", resamples = 1000) {
     q = as.numeric(table(y)) / n
     toReturn$pVal = 1 - pDisHoeffInd(n * toReturn$tStar, p=p, q=q)
 
+  } else if (mode == "mixed") {
+    if (xIsDis && yIsDis) {
+      stop("Input vectors to tauStarTest both are discrete but 'mixed' mode was chosen instead of 'discrete'.\n")
+    } else if (!xIsDis && !yIsDis) {
+      warning("Neither vector input to tauStarTest has duplicate entries but 'mixed' mode was selected.
+               Will default to assuming x is discrete and y continuous. \n")
+    }
+    if (xIsDis) {
+      z = x
+      x = y
+      y = x
+    }
+    p = as.numeric(table(y)) / n
+    toReturn$pVal = 1 - pMixHoeffInd(n * toReturn$tStar, p=p)
   } else if (mode == "permutation") {
     sampleTStars = numeric(resamples)
     for (i in 1:resamples) {
