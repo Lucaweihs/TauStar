@@ -242,7 +242,7 @@ Rcpp::NumericVector VTStarFastTiesRCPP(NumericVector xNumeric,
 		} else {
 			for(int k = 0; k < numSavedYs; k++) {
 				totalYInTree += 1;
-				RBTreeInsert(tree, &(y[savedYsInds[k]]),0);
+				RBTreeInsert(tree, &(y[savedYsInds[k]]), 0);
 			}
 			lastX = x[i];
 			numSavedYs = 1;
@@ -291,7 +291,7 @@ Rcpp::NumericVector VTStarFastTiesRCPP(NumericVector xNumeric,
 			numSavedYs += 1;
 		} else {
 			for(int k = 0; k < numSavedYs; k++) {
-				RBTreeInsert(revTree, &(y[savedYsInds[k]]),0);
+				RBTreeInsert(revTree, &(y[savedYsInds[k]]), 0);
 			}
 			lastX = x[i];
 			numSavedYs = 1;

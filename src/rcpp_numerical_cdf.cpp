@@ -29,14 +29,29 @@ using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 /***
- * Computes
+ * Computes one of the square roots of the infinite product
+ *
+ * \prod_{j=1}^{\infty} (1 + v / (i^2 * j^2))^(-1)
+ *
+ * which square root is returned is undefined.
  */
 std::complex<double> sinhProd(std::complex<double> v, int i) {
   std::complex<double> a = M_PI * sqrt(v) / (1.0 * i);
   return(sqrt(a / sinh(a)));
 }
 
+/***
+ * Computes the infinite summation
+ *
+ * \sum_{i=0}^{\infty} 1 / (offset + i)^exponent
+ *
+ * up to some specified max error. If the function cannot guarentee the desired
+ * error then a warning is printed.
+ */
 double hurwitzZeta(double exponent, double offset, double maxError) {
+  if (exponent <= 1.0) {
+    Rcpp::stop("Exponent in hurwitzZeta must be > 1");
+  }
   double maxSumLength = pow(2, 27);
   double sumLengthAsDouble = fmax(
     ceil(pow(maxError, -1.0 / exponent)) - floor(offset) - 1, 15.0
@@ -53,6 +68,14 @@ double hurwitzZeta(double exponent, double offset, double maxError) {
   return sum + tailInt;
 }
 
+/***
+ * Computes
+ *
+ * (-1)^k \zeta(2k, h)^2 / (2k)
+ *
+ * where \zeta is the Hurwitz-Zeta function. This computation is only up to some
+ * max specified error.
+ */
 double aCoef(int k, int h, double maxError) {
   double maxHurZeta = 1.0 / ((2 * k - 1) * pow(h - 1, 2 * k - 1));
   double maxErrorForHurZeta = -maxHurZeta +
@@ -61,6 +84,12 @@ double aCoef(int k, int h, double maxError) {
   return(sign * std::pow(hurwitzZeta(2 * k, h, maxErrorForHurZeta), 2.0) / (2 * k));
 }
 
+/***
+ * A function used in calculating the characteristic function for the
+ * asymptotic distribution t* statistic in the continuous case. In particular
+ * this is the infinite tail summation of that computation. As usualy this is
+ * computed only up to some specified error.
+ */
 std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   std::complex<double> sum = 0;
   std::complex<double> vProd = 1;
@@ -93,6 +122,11 @@ std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   return sum;
 }
 
+/***
+ * A function used in calculating the characteristic function for the
+ * asymptotic distribution t* statistic in the continuous case. In particular
+ * this computes a simple sum of complex values along a grid.
+ */
 std::complex<double> gridSum(std::complex<double> v, int sideLen) {
   std::complex<double> sum = 0;
   for(int i = 1; i <= sideLen; i++) {
@@ -103,6 +137,10 @@ std::complex<double> gridSum(std::complex<double> v, int sideLen) {
   return(sum);
 }
 
+/***
+ * The characteristic function of the asymptotic distribution of t* in the
+ * continuous case computed up to some specified error.
+ */
 std::complex<double> asymCharFunction(double t, double maxError) {
   if(t == 0) {
     return 1;
@@ -117,11 +155,21 @@ std::complex<double> asymCharFunction(double t, double maxError) {
   return(exp(sum));
 }
 
+/***
+ * A class whose only purpose is to be subclassed. Provides an interface
+ * to get an integrand (taking two parameters) up to some maximum error.
+ */
 class IntegrandEvaluator {
 public:
-  virtual std::complex<double> integrand(double x, double t, double maxError) = 0;
+  virtual std::complex<double>
+    integrand(double x, double t, double maxError) = 0;
 };
 
+/***
+ * An IntegrandEvaluator used when numerically inverting the characteristic
+ * function of the asymptotic distribution of t* to get the CDF of that
+ * distribution.
+ */
 class AsymCdfIntegrandEvaluator : public IntegrandEvaluator {
 public:
   std::complex<double> integrand(double x, double t, double maxError) {
@@ -136,6 +184,11 @@ public:
   }
 };
 
+/***
+ * An IntegrandEvaluator used when numerically inverting the characteristic
+ * function of the asymptotic distribution of t* to get the PDF of that
+ * distribution.
+ */
 class AsymPdfIntegrandEvaluator : public IntegrandEvaluator {
 public:
   std::complex<double> integrand(double x, double t, double maxError) {
@@ -150,6 +203,12 @@ public:
   }
 };
 
+/***
+ * Takes an integrand evaluator which corresponds to the integrand of a
+ * numerical characteristic function inversion and then performs the inversion
+ * using that integrand evaluator. The integration is done on an interval of
+ * size [-T,T] and is
+ */
 double numericalCfInversion(
     IntegrandEvaluator* intEval,
     double x,
