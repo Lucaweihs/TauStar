@@ -127,7 +127,7 @@ dDisHoeffInd <- function(x, p, q, error = 10^-3) {
 rDisHoeffInd <- function(n, p, q) {
   eigenP = eigenForDiscreteProbs(p)
   eigenQ = eigenForDiscreteProbs(q)
-  asymResults = numeric(asymSims)
+  asymResults = numeric(n)
   for(i in 1:length(eigenP)) {
     for(j in 1:length(eigenQ)) {
       asymResults = asymResults + 4 * eigenP[i] * eigenQ[j] * (rchisq(n, df=1) - 1)
@@ -156,7 +156,7 @@ rMixHoeffInd <- function(n, p, error = 10^-8) {
   sims = numeric(n)
   for(lambda in eigenP) {
     for(i in 1:top) {
-      sims = sims + (12 / pi^2) * (-lambda)/i^2 * (rchisq(asymSims, df=1) - 1)
+      sims = sims + (12 / pi^2) * (-lambda)/i^2 * (rchisq(n, df=1) - 1)
     }
   }
   return(sims)

@@ -1,6 +1,24 @@
 library(TauStar)
 context("Testing the CDFs.")
 
+simulateDensityAndTailProbs = function(rDist, n, x = seq(-1.1, 4, length = 20)) {
+  vals = rDist(n)
+  lowerTailProbs = numeric(length(x))
+  for (i in 1:length(x)) {
+    lowerTailProbs[i] = mean(vals <= x[i])
+  }
+  return(list(density = density(vals, from = -1.1, to = 4),
+              lowerTailProbs = lowerTailProbs,
+              x = x))
+}
+
+read.matrix = function(file) {
+  return(read.table(file, sep = ",", as.is = T))
+}
+
+p = c(0.19556498, 0.2431002, 0.10629372, 0.21154617, 0.03182509, 0.21166985)
+q = c(0.34460139, 0.29669263, 0.11664926, 0.24205672)
+
 test_that("pHoeffInd function returns correct values", {
   # Comparing against the values given by the BKR paper
   bkrToHoeff = function(x) {
@@ -44,5 +62,57 @@ test_that("dHoeffInd function returns correct values", {
 })
 
 test_that("pDisHoeffInd function returns correct values", {
+  # Bernoulli case
+  p = 2/3
+  q = 1/4
+  coef = 4 * p * q * (1 - p) * (1 - q)
+  for (x in seq(-1, 4, length = 10)) {
+    expect_equal(dDisHoeffInd(x, c(p, 1-p), c(q, 1-q)),
+                 pchisq(x / coef, 1))
+  }
+  lowerTailProbsMat = read.matrix("disLowerTailProbs.csv")
+  for (i in 1:nrow(lowerTailProbsMat)) {
+    expect_true(abs(lowerTailProbsMat[i,2] -
+                 pDisHoeffInd(lowerTailProbsMat[i,1], p, q)) < 10^-4)
+  }
 })
 
+test_that("dDisHoeffInd function returns correct values", {
+  # Bernoulli case
+  p = 2/3
+  q = 1/4
+  coef = 4 * p * q * (1 - p) * (1 - q)
+  for (x in seq(-1, 4, length = 10)) {
+    expect_equal(dDisHoeffInd(x, c(p, 1-p), c(q, 1-q)),
+                 1/coef * dchisq(x / coef, 1))
+  }
+
+  empDens = read.matrix("disDensityData.csv")
+  set.seed(23784)
+  inds = sample(nrow(empDens), 5)
+  for (i in 1:length(inds)) {
+    expect_true(abs(empDens[inds[i],2] -
+                       dDisHoeffInd(empDens[inds[i], 1], p, q)) < 5 * 10^-3)
+  }
+})
+#
+# test_that("pMixHoeffInd function returns correct values", {
+#   # LOAD THINGS HERE
+#   p = c(0.19556498, 0.2431002, 0.10629372, 0.21154617, 0.03182509, 0.21166985)
+#
+#   empLowerTailProbs
+#   x
+#   for (i in 1:length(x)) {
+#     expect_equal(empLowerTailProbs[i], pMixHoeffInd(x, p))
+#   }
+# })
+#
+# test_that("dMixHoeffInd function returns correct values", {
+#   # LOAD THINGS HERE
+#   p = c(0.19556498, 0.2431002, 0.10629372, 0.21154617, 0.03182509, 0.21166985)
+#
+#   x = sample(empDens$x, 5)
+#   for (i in 1:length(x)) {
+#     expect_equal(empDens$y[i], dMixHoeffInd(x, p))
+#   }
+# })
