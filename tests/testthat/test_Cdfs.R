@@ -67,8 +67,8 @@ test_that("pDisHoeffInd function returns correct values", {
   q = 1/4
   coef = 4 * p * q * (1 - p) * (1 - q)
   for (x in seq(-1, 4, length = 10)) {
-    expect_equal(dDisHoeffInd(x, c(p, 1-p), c(q, 1-q)),
-                 pchisq(x / coef, 1))
+    expect_true(abs(pDisHoeffInd(x, c(p, 1-p), c(q, 1-q)) -
+                 pchisq(x / coef + 1, 1)) < 10^-3)
   }
   lowerTailProbsMat = read.matrix("disLowerTailProbs.csv")
   for (i in 1:nrow(lowerTailProbsMat)) {
@@ -83,8 +83,8 @@ test_that("dDisHoeffInd function returns correct values", {
   q = 1/4
   coef = 4 * p * q * (1 - p) * (1 - q)
   for (x in seq(-1, 4, length = 10)) {
-    expect_equal(dDisHoeffInd(x, c(p, 1-p), c(q, 1-q)),
-                 1/coef * dchisq(x / coef, 1))
+    expect_true(abs(dDisHoeffInd(x, c(p, 1-p), c(q, 1-q)) -
+                 dchisq(x / coef + 1, 1) / coef) < 5 * 10^-3)
   }
 
   empDens = read.matrix("disDensityData.csv")
