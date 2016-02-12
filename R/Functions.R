@@ -138,14 +138,14 @@ rDisHoeffInd <- function(n, p, q) {
 
 pMixHoeffInd <- function(x, p, error = 10^-6) {
   eigenP = eigenForDiscreteProbs(p)
-  return(HoeffIndMixedCdfRCPP(x - 2 * sum(eigenP),
+  return(HoeffIndMixedCdfRCPP(x + 2 * sum(eigenP),
                                  eigenP,
                                  error))
 }
 
 dMixHoeffInd <- function(x, p, error = 10^-3) {
   eigenP = eigenForDiscreteProbs(p)
-  return(HoeffIndMixedPdfRCPP(x - 2 * sum(eigenP),
+  return(HoeffIndMixedPdfRCPP(x + 2 * sum(eigenP),
                               eigenP,
                               error))
 }
@@ -156,7 +156,7 @@ rMixHoeffInd <- function(n, p, error = 10^-8) {
   sims = numeric(n)
   for(lambda in eigenP) {
     for(i in 1:top) {
-      sims = sims + (12 / pi^2) * (-lambda)/i^2 * (rchisq(n, df=1) - 1)
+      sims = sims + (12 / pi^2) * lambda/i^2 * (rchisq(n, df = 1) - 1)
     }
   }
   return(sims)
@@ -226,7 +226,7 @@ tauStarTest <- function(x, y, mode="auto", resamples = 1000) {
     if (xIsDis) {
       z = x
       x = y
-      y = x
+      y = z
     }
     p = as.numeric(table(y)) / n
     toReturn$pVal = 1 - pMixHoeffInd(n * toReturn$tStar, p=p)

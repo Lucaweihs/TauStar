@@ -59,13 +59,15 @@ std::complex<double> AMCIE::integrand(double x, double t, double maxError) {
   std::complex<double> sum = 0;
   std::complex<double> v(0, 12.0 * (-2.0 * t) / (M_PI * M_PI));
   double precision = pow(10, -15);
-  for(int i = 0; i < eigenP.size() && fabs(eigenP[i]) > precision; i++) {
-    int sign = getSinhSign((v * (-eigenP[i])).imag());
-    std::complex<double> sinhProdVal = sinhProd(v * (-eigenP[i]), 1);
-    if (sinhProdVal.imag() * sign <= 0) {
-      sinhProdVal *= -1;
+  for(int i = 0; i < eigenP.size(); i++) {
+    if (fabs(eigenP[i]) > precision) {
+      int sign = getSinhSign((v * eigenP[i]).imag());
+      std::complex<double> sinhProdVal = sinhProd(v * eigenP[i], 1);
+      if (sinhProdVal.imag() * sign <= 0) {
+        sinhProdVal *= -1;
+      }
+      sum += log(sinhProdVal);
     }
-    sum += log(sinhProdVal);
   }
   return 1 / (2 * M_PI) * exp(sum) * (1.0 - exp(-I * t * x)) / (I * t);
 }

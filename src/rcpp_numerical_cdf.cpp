@@ -35,6 +35,13 @@
 
 using namespace Rcpp;
 
+/***
+ * Used in the numericalCfInversion function. Doubles the range of values
+ * considered by the numerical integration; that is, if we were previously
+ * integrating in the range [-T, T] this extends the range to [-2*T, 2*T]).
+ * If we using n points in the riemann sum prior to running doubleWidth
+ * then we use 2*n points afterwards.
+ */
 void doubleWidth(arma::vec& positions, arma::vec& values,
                  IntegrandEvaluator& intEval, double x,
                  double integrandError) {
@@ -51,6 +58,11 @@ void doubleWidth(arma::vec& positions, arma::vec& values,
   }
 }
 
+/***
+ * Used in the numericalCfInversion function. Bisects every interval over which
+ * the riemann integration occurs; that is, this makes the grid of points we
+ * evaluate over finer.
+ */
 void bisect(arma::vec& positions, arma::vec& values,
             IntegrandEvaluator& intEval, double x,
             double integrandError) {
@@ -68,6 +80,14 @@ void bisect(arma::vec& positions, arma::vec& values,
   }
 }
 
+/***
+ * Used in the numericalCfInversion function. Takes a vector of ordered
+ * positions (points) in R along with some collection of values associated to
+ * these points and then computes a riemann sum of the values using the points
+ * as a partition. Here the size of an interval associated with a value is
+ * determined by the distance between the point's position and the next point's
+ * position.
+ */
 double riemannIntegrate(const arma::vec& positions, const arma::vec& values) {
   if (positions(0) != 0 && positions.size() >= 2) {
     stop("riemannIntegrate expects the first position to be 0 and"
@@ -97,8 +117,22 @@ double riemannIntegrate(const arma::vec& positions, const arma::vec& values) {
 /***
 * Takes an integrand evaluator which corresponds to the integrand of a
 * numerical characteristic function inversion and then performs the inversion
-* using that integrand evaluator. The integration is done on an interval of
-* size [-T,T] and is
+* using that integrand evaluator. The integration starts on the interval [-T,T]
+* but this interval grows to ensure that good convergence properties hold. We
+* assume that probability density or cumulative distribution function we are
+* trying to determine by inverting is supported on the positive real numbers
+* and thus this function will return 0 if x <= 0.
+*
+* @param intEval an IntegrandEvaluator object which provides the integrand used
+*        during the numerical integration.
+* @param x the value at which we wish to evaluate the inverted function.
+* @param T used to set the initial interval [-T,T] over which the integration
+*        occurs. Setting this intelligently can greatly improve performance.
+* @param convCrit a convergence criterion, the numerical integration will stop
+*        when within changes are less than convCrit.
+* @param maxIter the maximum number of iterations in the algorithm before
+*        stopping if the convCrit is not reached. If maxIter is reached then a
+*        warning is printed. If maxIter is < 5 then maxIter is set to 5.
 */
 double numericalCfInversion(IntegrandEvaluator& intEval, double x, double T,
                             double convCrit, int maxIter) {
@@ -156,22 +190,30 @@ double numericalCfInversion(IntegrandEvaluator& intEval, double x, double T,
   return intVal;
 }
 
+/***
+ * A simple function used to bound values to be within [0,1].
+ */
 double boundInZeroOne(double x) {
   return fmin(fmax(x, 0), 1);
 }
 
+/***
+ * Computes the asymptotic CDF function in the continuous case.
+ */
 //[[Rcpp::export]]
 arma::vec HoeffIndCdfRCPP(arma::vec x, double maxError) {
   AsymCdfIntegrandEvaluator acie;
   arma::vec cdfVals(x.size());
   for (int i = 0; i < x.size(); i++) {
     cdfVals[i] = boundInZeroOne(
-      numericalCfInversion(acie, x[i], 50.0, maxError, 12)); // TODO: 50.0
-                                                       // hardcoded for now
+      numericalCfInversion(acie, x[i], 50.0, maxError, 12));
   }
   return cdfVals;
 }
 
+/***
+ * Computes the asymptotic PDF function in the continuous case.
+ */
 //[[Rcpp::export]]
 arma::vec HoeffIndPdfRCPP(arma::vec x, double maxError) {
   AsymPdfIntegrandEvaluator apie;
@@ -184,6 +226,10 @@ arma::vec HoeffIndPdfRCPP(arma::vec x, double maxError) {
   return pdfVals;
 }
 
+/***
+ * Computes the eigenvalues needed to determine the asymptotic distributions
+ * in the mixed/discrete cases.
+ */
 // [[Rcpp::export]]
 arma::vec eigenForDiscreteProbs(arma::vec p) {
   arma::vec cdf(p.size());
@@ -201,13 +247,13 @@ arma::vec eigenForDiscreteProbs(arma::vec p) {
   for(int i = 0; i < p.size(); i++) {
     for(int j = i; j < p.size(); j++) {
       if (i == 0) {
-        symMat(i,j) = -(1 - cdf[j]) * (1 - cdf[j]);
+        symMat(i,j) = (1 - cdf[j]) * (1 - cdf[j]);
       } else {
-        symMat(i,j) = -(1 - cdf[j]) * (1 - cdf[j]) - cdf[i-1] * cdf[i-1];
+        symMat(i,j) = (1 - cdf[j]) * (1 - cdf[j]) + cdf[i-1] * cdf[i-1];
       }
 
       if (i != j) {
-        symMat(i,j) += cdf[i] * (1 - cdf[i]) + (q1[j-1] - q1[i]);
+        symMat(i,j) -= cdf[i] * (1 - cdf[i]) + (q1[j-1] - q1[i]);
         symMat(j,i) = symMat(i,j);
         symMat(j,i) *= sqrt(p[i] * p[j]);
       }
@@ -217,6 +263,9 @@ arma::vec eigenForDiscreteProbs(arma::vec p) {
   return arma::eig_sym(symMat);
 }
 
+/***
+ * Computes the asymptotic CDF function in the discrete case.
+ */
 // [[Rcpp::export]]
 arma::vec HoeffIndDiscreteCdfRCPP(arma::vec x, arma::vec eigenP,
                                   arma::vec eigenQ, double maxError) {
@@ -233,6 +282,9 @@ arma::vec HoeffIndDiscreteCdfRCPP(arma::vec x, arma::vec eigenP,
   return cdfVals;
 }
 
+/***
+ * Computes the asymptotic PDF function in the discrete case.
+ */
 // [[Rcpp::export]]
 arma::vec HoeffIndDiscretePdfRCPP(arma::vec x, arma::vec eigenP,
                                   arma::vec eigenQ, double maxError) {
@@ -249,6 +301,9 @@ arma::vec HoeffIndDiscretePdfRCPP(arma::vec x, arma::vec eigenP,
   return pdfVals;
 }
 
+/***
+ * Computes the asymptotic CDF function in the mixed case.
+ */
 // [[Rcpp::export]]
 arma::vec HoeffIndMixedCdfRCPP(arma::vec x, arma::vec eigenP, double maxError) {
   AsymMixedCdfIntegrandEvaluator amcie(eigenP);
@@ -260,6 +315,9 @@ arma::vec HoeffIndMixedCdfRCPP(arma::vec x, arma::vec eigenP, double maxError) {
   return cdfVals;
 }
 
+/***
+ * Computes the asymptotic PDF function in the mixed case.
+ */
 // [[Rcpp::export]]
 arma::vec HoeffIndMixedPdfRCPP(arma::vec x, arma::vec eigenP, double maxError) {
   AsymMixedPdfIntegrandEvaluator ampie(eigenP);
