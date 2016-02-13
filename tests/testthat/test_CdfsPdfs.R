@@ -1,5 +1,5 @@
 library(TauStar)
-context("Testing the CDFs.")
+context("Testing the CDFs and PDFs.")
 
 simulateDensityAndTailProbs = function(rDist, n, x = seq(-1.1, 4, length = 20)) {
   vals = rDist(n)
