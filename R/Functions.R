@@ -536,6 +536,17 @@ isValidDataVector <- function(x) {
 #'        Otherwise this value is ignored.
 #'
 #' @return a list with class "tstest" recording the outcome of the test.
+#'
+#' @examples
+#' set.seed(123)
+#' x = rnorm(100)
+#' y = rnorm(100)
+#' testResults = tauStarTest(x,y)
+#' print(testResults$pVal) # big p-value
+#'
+#' y = y + x # make x and y correlated
+#' testResults = tauStarTest(x,y)
+#' print(testResults$pVal) # small p-value
 tauStarTest <- function(x, y, mode="auto", resamples = 1000) {
   if (!isValidDataVector(x) || !isValidDataVector(y) ||
       length(x) != length(y)) {

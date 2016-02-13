@@ -1,21 +1,28 @@
 ## Test environments
-* local OS X install, R 3.2.2
+* local OS X install, R 3.2.3
 * Using devtools::build_win()
 
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-There was 1 NOTE:
+There were 2 NOTEs:
 
 * checking CRAN incoming feasibility ... NOTE
-  Maintainer: ‘Luca Weihs <lucaw@uw.edu>’
-  New submission
-
-  The Title field should be in title case, current version then in title case:
-  ‘Efficient Computation of the t* Statistic of Bergsma and Dassios (2014)’
-  ‘Efficient Computation of the T* Statistic of Bergsma and Dassios (2014)’
+  Maintainer: 'Luca Weihs <lucaw@uw.edu>'
   
-  t* is intentionally lower-case as it is the name of a particular statistic.
+  Possibly mis-spelled words in DESCRIPTION:
+    Bergsma (3:65, 11:37)
+    Dassios (4:13, 11:49)
+    Drton (14:29)
+    Nandy (14:11)
+    Weihs (14:18)
+  
+  The Title field should be in title case, current version then in title case:
+  'Efficient Computation and Testing of the t* Statistic of Bergsma and Dassios'
+  'Efficient Computation and Testing of the T* Statistic of Bergsma and Dassios'
+  
+  None of the above words are mis-spelled (they are all names) and t* is 
+  intentionally lower-case as it is the name of a particular statistic.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.

@@ -40,9 +40,22 @@
 #' set.seed(9492)
 #' tStar(rnorm(10000), rnorm(10000),
 #'       resample=TRUE, sampleSize=30, numResamples=5000)
+#'
+#' # Perform a test of independence using continuous data
+#' set.seed(123)
+#' x = rnorm(100)
+#' y = rnorm(100)
+#' testResults = tauStarTest(x,y)
+#' print(testResults$pVal) # big p-value
+#'
+#' # Now make x and y correlated so we expect a small p-value
+#' y = y + x
+#' testResults = tauStarTest(x,y)
+#' print(testResults$pVal) # small p-value
 #' }
 #'
 #' @importFrom Rcpp evalCpp
 #' @useDynLib TauStar
+#' @import stats
 "_PACKAGE"
 #> [1] "_PACKAGE"
