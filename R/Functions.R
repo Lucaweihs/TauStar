@@ -17,7 +17,8 @@
 #'
 #' Computes the t* U-statistic for input data pairs
 #' (x_1,y_1), (x_2,y_2), ..., (x_n,y_n)
-#' using the algorithm developed by Weihs, Drton, and Leung (2015).
+#' using the algorithm developed by Weihs, Drton, and Leung (2015)
+#' <DOI:10.1007/s00180-015-0639-x>.
 #'
 #' @export
 #'
@@ -517,7 +518,8 @@ isValidDataVector <- function(x) {
 #' The asymptotic results hold in the case that x is generated from either a
 #' discrete or continous distribution and similarly for y (in particular it is
 #' allowed for one to be continuous while the other is discrete). The asymptotic
-#' distributions were computed in Nandy, Weihs, and Drton (2016).
+#' distributions were computed in Nandy, Weihs, and Drton (2016)
+#' <arXiv:1602.04387>.
 #'
 #' @export
 #'
@@ -536,6 +538,10 @@ isValidDataVector <- function(x) {
 #'        Otherwise this value is ignored.
 #'
 #' @return a list with class "tstest" recording the outcome of the test.
+#'
+#' @references
+#' Preetam Nandy, Luca Weihs, and Mathias Drton. Large-Sample Theory for the
+#' Bergsma-Dassios Sign Covariance. ArXiV preprint arXiv:1602.04387. 2016.
 #'
 #' @examples
 #' set.seed(123)

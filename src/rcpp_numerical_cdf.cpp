@@ -17,7 +17,7 @@
 
 /***
 * A collection of functions that allow for the computation of the asymptotic
-* distributions described in Nandy, Weihs, Drton (2016).
+* distributions described in Nandy, Weihs, Drton (2016) <arXiv:1602.04387>.
 */
 
 #include<RcppArmadillo.h>
@@ -228,8 +228,8 @@ arma::vec HoeffIndPdfRCPP(arma::vec x, double maxError) {
 //' Eigenvalues for discrete asymptotic distribution
 //'
 //' Computes the eigenvalues needed to determine the asymptotic distributions
-//' in the mixed/discrete cases. See Nandy, Weihs, and Drton (2016) for more
-//' details.
+//' in the mixed/discrete cases. See Nandy, Weihs, and Drton (2016)
+//' <arXiv:1602.04387> for more details.
 //'
 //' @export
 //'

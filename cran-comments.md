@@ -1,3 +1,10 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Updated inline citations to include the DOI when possible. In some cases the
+  referenced paper has not yet been published (so no DOI exists), so instead of
+  the DOI the ArXiv preprint identification number is given.
+
 ## Test environments
 * local OS X install, R 3.2.3
 * Using devtools::build_win()

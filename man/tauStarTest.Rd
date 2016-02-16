@@ -33,7 +33,8 @@ the asymptotic (or permutation based) distribution of the test statistic t*.
 The asymptotic results hold in the case that x is generated from either a
 discrete or continous distribution and similarly for y (in particular it is
 allowed for one to be continuous while the other is discrete). The asymptotic
-distributions were computed in Nandy, Weihs, and Drton (2016).
+distributions were computed in Nandy, Weihs, and Drton (2016)
+<arXiv:1602.04387>.
 }
 \examples{
 set.seed(123)
@@ -45,5 +46,9 @@ print(testResults$pVal) # big p-value
 y = y + x # make x and y correlated
 testResults = tauStarTest(x,y)
 print(testResults$pVal) # small p-value
+}
+\references{
+Preetam Nandy, Luca Weihs, and Mathias Drton. Large-Sample Theory for the
+Bergsma-Dassios Sign Covariance. ArXiV preprint arXiv:1602.04387. 2016.
 }
 

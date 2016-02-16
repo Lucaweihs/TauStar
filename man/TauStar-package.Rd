@@ -7,12 +7,11 @@
 \title{Efficient Computation and Testing of the t* Statistic of Bergsma and Dassios}
 \description{
 Computes the t* statistic corresponding to the tau star population
-coefficient introduced by Bergsma and Dassios (Bernoulli 20(2), 2014,
-1006-1028) and does so in  O(n^2*log(n)) time. Also allows for
+coefficient introduced by Bergsma and Dassios (2014) <DOI:10.3150/13-BEJ514>
+and does so in  O(n^2*log(n)) time following the algorithm of Weihs,
+Drton, and Leung (2016) <DOI:10.1007/s00180-015-0639-x>. Also allows for
 independence testing using the asymptotic distribution of t* as described by
-Nandy, Weihs, and Drton (2016).
-}
-\details{
+Nandy, Weihs, and Drton (2016) <arXiv:1602.04387>.
 To directly compute the t* statistic see the function tStar. If otherwise
 interested in performing tests of independence then see the function
 tauStarTest.
@@ -59,7 +58,11 @@ Bergsma, Wicher; Dassios, Angelos. A consistent test of independence based
 on a sign covariance related to Kendall's tau. \emph{Bernoulli} 20 (2014), no.
 2, 1006--1028.
 \cr\cr
-Weihs, Luca, Mathias Drton, and Dennis Leung. "Efficient Computation of the
-Bergsma-Dassios Sign Covariance." arXiv preprint arXiv:1504.00964 (2015).
+Luca Weihs, Mathias Drton, and Dennis Leung. Efficient Computation of the
+Bergsma-Dassios Sign Covariance. \emph{Computational Statistics}, x:x-x,
+2016. to appear.
+\cr\cr
+Preetam Nandy, Luca Weihs, and Mathias Drton. Large-Sample Theory for the
+Bergsma-Dassios Sign Covariance. ArXiV preprint arXiv:1602.04387. 2016.
 }
 

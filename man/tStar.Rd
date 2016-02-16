@@ -42,7 +42,8 @@ The numeric value of the t* statistic.
 \description{
 Computes the t* U-statistic for input data pairs
 (x_1,y_1), (x_2,y_2), ..., (x_n,y_n)
-using the algorithm developed by Weihs, Drton, and Leung (2015).
+using the algorithm developed by Weihs, Drton, and Leung (2015)
+<DOI:10.1007/s00180-015-0639-x>.
 }
 \examples{
 \dontrun{
