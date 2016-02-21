@@ -33,6 +33,7 @@
 #include "AsymMixedPdfIntegrandEvaluator.h"
 
 // [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::interfaces(r, cpp)]]
 
 using namespace Rcpp;
 

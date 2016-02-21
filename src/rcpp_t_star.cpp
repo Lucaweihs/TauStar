@@ -32,6 +32,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::interfaces(r, cpp)]]
 
 // The following functions are used as input to initalize a red black tree whose
 // nodes contain doubles. Knowing why these functions exist is likely

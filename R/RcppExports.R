@@ -56,3 +56,7 @@ TStarSlowTiesRCPP <- function(x, y, vStat) {
     .Call('TauStar_TStarSlowTiesRCPP', PACKAGE = 'TauStar', x, y, vStat)
 }
 
+# Register entry points for exported C++ functions
+methods::setLoadAction(function(ns) {
+    .Call('TauStar_RcppExport_registerCCallable', PACKAGE = 'TauStar')
+})
