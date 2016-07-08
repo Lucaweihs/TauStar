@@ -158,17 +158,55 @@ namespace TauStar {
         return Rcpp::as<arma::vec >(__result);
     }
 
-    inline Rcpp::NumericVector TStarFastTiesRCPP(NumericVector xNumeric, NumericVector yNumeric) {
-        typedef SEXP(*Ptr_TStarFastTiesRCPP)(SEXP,SEXP);
-        static Ptr_TStarFastTiesRCPP p_TStarFastTiesRCPP = NULL;
-        if (p_TStarFastTiesRCPP == NULL) {
-            validateSignature("Rcpp::NumericVector(*TStarFastTiesRCPP)(NumericVector,NumericVector)");
-            p_TStarFastTiesRCPP = (Ptr_TStarFastTiesRCPP)R_GetCCallable("TauStar", "TauStar_TStarFastTiesRCPP");
+    inline double TStarHellerAndHellerRCPP(const arma::vec& x, const arma::vec& y) {
+        typedef SEXP(*Ptr_TStarHellerAndHellerRCPP)(SEXP,SEXP);
+        static Ptr_TStarHellerAndHellerRCPP p_TStarHellerAndHellerRCPP = NULL;
+        if (p_TStarHellerAndHellerRCPP == NULL) {
+            validateSignature("double(*TStarHellerAndHellerRCPP)(const arma::vec&,const arma::vec&)");
+            p_TStarHellerAndHellerRCPP = (Ptr_TStarHellerAndHellerRCPP)R_GetCCallable("TauStar", "TauStar_TStarHellerAndHellerRCPP");
         }
         RObject __result;
         {
             RNGScope __rngScope;
-            __result = p_TStarFastTiesRCPP(Rcpp::wrap(xNumeric), Rcpp::wrap(yNumeric));
+            __result = p_TStarHellerAndHellerRCPP(Rcpp::wrap(x), Rcpp::wrap(y));
+        }
+        if (__result.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (__result.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(__result).c_str());
+        return Rcpp::as<double >(__result);
+    }
+
+    inline double VTStarHellerAndHellerRCPP(const arma::vec& x, const arma::vec& y) {
+        typedef SEXP(*Ptr_VTStarHellerAndHellerRCPP)(SEXP,SEXP);
+        static Ptr_VTStarHellerAndHellerRCPP p_VTStarHellerAndHellerRCPP = NULL;
+        if (p_VTStarHellerAndHellerRCPP == NULL) {
+            validateSignature("double(*VTStarHellerAndHellerRCPP)(const arma::vec&,const arma::vec&)");
+            p_VTStarHellerAndHellerRCPP = (Ptr_VTStarHellerAndHellerRCPP)R_GetCCallable("TauStar", "TauStar_VTStarHellerAndHellerRCPP");
+        }
+        RObject __result;
+        {
+            RNGScope __rngScope;
+            __result = p_VTStarHellerAndHellerRCPP(Rcpp::wrap(x), Rcpp::wrap(y));
+        }
+        if (__result.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (__result.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(__result).c_str());
+        return Rcpp::as<double >(__result);
+    }
+
+    inline Rcpp::NumericVector TStarWeihsEtAlRCPP(NumericVector xNumeric, NumericVector yNumeric) {
+        typedef SEXP(*Ptr_TStarWeihsEtAlRCPP)(SEXP,SEXP);
+        static Ptr_TStarWeihsEtAlRCPP p_TStarWeihsEtAlRCPP = NULL;
+        if (p_TStarWeihsEtAlRCPP == NULL) {
+            validateSignature("Rcpp::NumericVector(*TStarWeihsEtAlRCPP)(NumericVector,NumericVector)");
+            p_TStarWeihsEtAlRCPP = (Ptr_TStarWeihsEtAlRCPP)R_GetCCallable("TauStar", "TauStar_TStarWeihsEtAlRCPP");
+        }
+        RObject __result;
+        {
+            RNGScope __rngScope;
+            __result = p_TStarWeihsEtAlRCPP(Rcpp::wrap(xNumeric), Rcpp::wrap(yNumeric));
         }
         if (__result.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -177,17 +215,17 @@ namespace TauStar {
         return Rcpp::as<Rcpp::NumericVector >(__result);
     }
 
-    inline Rcpp::NumericVector VTStarFastTiesRCPP(NumericVector xNumeric, NumericVector yNumeric) {
-        typedef SEXP(*Ptr_VTStarFastTiesRCPP)(SEXP,SEXP);
-        static Ptr_VTStarFastTiesRCPP p_VTStarFastTiesRCPP = NULL;
-        if (p_VTStarFastTiesRCPP == NULL) {
-            validateSignature("Rcpp::NumericVector(*VTStarFastTiesRCPP)(NumericVector,NumericVector)");
-            p_VTStarFastTiesRCPP = (Ptr_VTStarFastTiesRCPP)R_GetCCallable("TauStar", "TauStar_VTStarFastTiesRCPP");
+    inline Rcpp::NumericVector VTStarWeihsEtAlRCPP(NumericVector xNumeric, NumericVector yNumeric) {
+        typedef SEXP(*Ptr_VTStarWeihsEtAlRCPP)(SEXP,SEXP);
+        static Ptr_VTStarWeihsEtAlRCPP p_VTStarWeihsEtAlRCPP = NULL;
+        if (p_VTStarWeihsEtAlRCPP == NULL) {
+            validateSignature("Rcpp::NumericVector(*VTStarWeihsEtAlRCPP)(NumericVector,NumericVector)");
+            p_VTStarWeihsEtAlRCPP = (Ptr_VTStarWeihsEtAlRCPP)R_GetCCallable("TauStar", "TauStar_VTStarWeihsEtAlRCPP");
         }
         RObject __result;
         {
             RNGScope __rngScope;
-            __result = p_VTStarFastTiesRCPP(Rcpp::wrap(xNumeric), Rcpp::wrap(yNumeric));
+            __result = p_VTStarWeihsEtAlRCPP(Rcpp::wrap(xNumeric), Rcpp::wrap(yNumeric));
         }
         if (__result.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -215,17 +253,17 @@ namespace TauStar {
         return Rcpp::as<Rcpp::NumericVector >(__result);
     }
 
-    inline Rcpp::NumericVector TStarSlowTiesRCPP(NumericVector x, NumericVector y, bool vStat) {
-        typedef SEXP(*Ptr_TStarSlowTiesRCPP)(SEXP,SEXP,SEXP);
-        static Ptr_TStarSlowTiesRCPP p_TStarSlowTiesRCPP = NULL;
-        if (p_TStarSlowTiesRCPP == NULL) {
-            validateSignature("Rcpp::NumericVector(*TStarSlowTiesRCPP)(NumericVector,NumericVector,bool)");
-            p_TStarSlowTiesRCPP = (Ptr_TStarSlowTiesRCPP)R_GetCCallable("TauStar", "TauStar_TStarSlowTiesRCPP");
+    inline Rcpp::NumericVector TStarNaiveRCPP(NumericVector x, NumericVector y, bool vStat) {
+        typedef SEXP(*Ptr_TStarNaiveRCPP)(SEXP,SEXP,SEXP);
+        static Ptr_TStarNaiveRCPP p_TStarNaiveRCPP = NULL;
+        if (p_TStarNaiveRCPP == NULL) {
+            validateSignature("Rcpp::NumericVector(*TStarNaiveRCPP)(NumericVector,NumericVector,bool)");
+            p_TStarNaiveRCPP = (Ptr_TStarNaiveRCPP)R_GetCCallable("TauStar", "TauStar_TStarNaiveRCPP");
         }
         RObject __result;
         {
             RNGScope __rngScope;
-            __result = p_TStarSlowTiesRCPP(Rcpp::wrap(x), Rcpp::wrap(y), Rcpp::wrap(vStat));
+            __result = p_TStarNaiveRCPP(Rcpp::wrap(x), Rcpp::wrap(y), Rcpp::wrap(vStat));
         }
         if (__result.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();

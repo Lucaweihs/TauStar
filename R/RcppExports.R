@@ -40,20 +40,28 @@ HoeffIndMixedPdfRCPP <- function(x, eigenP, maxError) {
     .Call('TauStar_HoeffIndMixedPdfRCPP', PACKAGE = 'TauStar', x, eigenP, maxError)
 }
 
-TStarFastTiesRCPP <- function(xNumeric, yNumeric) {
-    .Call('TauStar_TStarFastTiesRCPP', PACKAGE = 'TauStar', xNumeric, yNumeric)
+TStarHellerAndHellerRCPP <- function(x, y) {
+    .Call('TauStar_TStarHellerAndHellerRCPP', PACKAGE = 'TauStar', x, y)
 }
 
-VTStarFastTiesRCPP <- function(xNumeric, yNumeric) {
-    .Call('TauStar_VTStarFastTiesRCPP', PACKAGE = 'TauStar', xNumeric, yNumeric)
+VTStarHellerAndHellerRCPP <- function(x, y) {
+    .Call('TauStar_VTStarHellerAndHellerRCPP', PACKAGE = 'TauStar', x, y)
+}
+
+TStarWeihsEtAlRCPP <- function(xNumeric, yNumeric) {
+    .Call('TauStar_TStarWeihsEtAlRCPP', PACKAGE = 'TauStar', xNumeric, yNumeric)
+}
+
+VTStarWeihsEtAlRCPP <- function(xNumeric, yNumeric) {
+    .Call('TauStar_VTStarWeihsEtAlRCPP', PACKAGE = 'TauStar', xNumeric, yNumeric)
 }
 
 TStarFastResampleRCPP <- function(xNumeric, yNumeric, numResamples, sampleSize) {
     .Call('TauStar_TStarFastResampleRCPP', PACKAGE = 'TauStar', xNumeric, yNumeric, numResamples, sampleSize)
 }
 
-TStarSlowTiesRCPP <- function(x, y, vStat) {
-    .Call('TauStar_TStarSlowTiesRCPP', PACKAGE = 'TauStar', x, y, vStat)
+TStarNaiveRCPP <- function(x, y, vStat) {
+    .Call('TauStar_TStarNaiveRCPP', PACKAGE = 'TauStar', x, y, vStat)
 }
 
 # Register entry points for exported C++ functions

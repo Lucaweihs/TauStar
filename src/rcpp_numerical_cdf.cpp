@@ -185,7 +185,7 @@ double numericalCfInversion(IntegrandEvaluator& intEval, double x, double T,
   }
 
   if (k == maxIter) {
-    Rprintf("\nWARNING: max iterations reached, cannot guarentee convergence.\n");
+    Rcpp::warning("Max iterations reached, cannot guarentee convergence.\n");
   }
 
   return intVal;

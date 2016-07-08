@@ -31,9 +31,9 @@ double hurwitzZeta(double exponent, double offset, double maxError) {
   if (exponent <= 1.0) {
     Rcpp::stop("Exponent in hurwitzZeta must be > 1");
   }
-  double maxSumLength = pow(2, 27);
+  double maxSumLength = std::pow(2, 27);
   double sumLengthAsDouble = fmax(
-    ceil(pow(maxError, -1.0 / exponent)) - floor(offset) - 1, 15.0
+    ceil(std::pow(maxError, -1.0 / exponent)) - floor(offset) - 1, 15.0
   );
   int sumLength
     = (sumLengthAsDouble > maxSumLength) ?maxSumLength : sumLengthAsDouble;
@@ -43,9 +43,9 @@ double hurwitzZeta(double exponent, double offset, double maxError) {
   }
   long double sum = 0;
   for (int i = 0; i <= sumLength; i++) {
-    sum += 1.0 / pow(offset + i, exponent);
+    sum += 1.0 / std::pow(offset + i, exponent);
   }
-  long double tailInt = (exponent - 1) * 1.0 / pow(sumLength + offset + 1,
+  long double tailInt = (exponent - 1) * 1.0 / std::pow(sumLength + offset + 1,
                          exponent - 1);
   return sum + tailInt;
 }
@@ -59,7 +59,7 @@ std::complex<double> gridSum(std::complex<double> v, int sideLen) {
   std::complex<double> sum = 0;
   for(int i = 1; i <= sideLen; i++) {
     for(int j = 1; j <= sideLen; j++) {
-      sum += -0.5 * log(1.0 + v / pow(1.0 * i * j, 2.0));
+      sum += -0.5 * std::log(1.0 + v / std::pow(1.0 * i * j, 2.0));
     }
   }
   return(sum);
@@ -86,7 +86,7 @@ std::complex<double> sinhProd(std::complex<double> v, int i) {
  * max specified error.
  */
 double aCoef(int k, int h, double maxError) {
-  double maxHurZeta = 1.0 / ((2 * k - 1) * pow(h - 1, 2 * k - 1));
+  double maxHurZeta = 1.0 / ((2 * k - 1) * std::pow(h - 1, 2 * k - 1));
   double maxErrorForHurZeta = -maxHurZeta +
     (1 / 2.0) * sqrt(4 * maxHurZeta * maxHurZeta + 8 * k * maxError);
   int sign = (k % 2 == 0) ? 1 : -1;
@@ -106,7 +106,7 @@ std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   double absV = abs(v);
 
   // Half of the max error comes from truncating the summation
-  double factor = absV / pow(h, 4.0);
+  double factor = absV / std::pow(h, 4.0);
   int sumLength;
   if (factor >= 1) {
     Rprintf("WARNING: h chosen for tailSum is too small and may not result in"
@@ -115,8 +115,8 @@ std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   } else {
     sumLength = fmax(
       ceil((-log(maxError / 2.0) +
-        4 * log(h) +
-        2 * log(M_PI * (6 * h - 5) / pow(6 * (1 - 2 * h), 2)))
+        4 * std::log(h) +
+        2 * std::log(M_PI * (6 * h - 5) / std::pow(6 * (1 - 2 * h), 2)))
              / (-log(factor))) + 2,
              10);
   }
@@ -142,14 +142,14 @@ std::complex<double> asymContCharFunction(double t, double maxError) {
   if(t == 0) {
     return 1;
   }
-  std::complex<double> v(0, 36 * (-2.0 * t) / pow(M_PI, 4.0));
-  int h = ceil(pow(2.0 * abs(v), 1.0 / 4.0)) + 2;
+  std::complex<double> v(0, 36 * (-2.0 * t) / std::pow(M_PI, 4.0));
+  int h = ceil(std::pow(2.0 * abs(v), 1.0 / 4.0)) + 2;
   std::complex<double> sum = -gridSum(v, h - 1);
   for (int i = 1; i <= h - 1; i++) {
-    sum += 2.0 * log(sinhProd(v, i));
+    sum += 2.0 * std::log(sinhProd(v, i));
   }
-  sum += tailSum(v, h, maxError / abs(exp(sum)));
-  return(exp(sum));
+  sum += tailSum(v, h, maxError / abs(std::exp(sum)));
+  return(std::exp(sum));
 }
 
 
@@ -160,7 +160,7 @@ std::complex<double> AsymCdfIntegrandEvaluator::integrand(double x, double t, do
     val = x;
   } else {
     val = asymContCharFunction(t, maxError * t / 2.0) *
-      (1.0 - exp(-i * t * x)) / (i * t);
+      (1.0 - std::exp(-i * t * x)) / (i * t);
   }
   return val / (2.0 * M_PI);
 }

@@ -15,8 +15,13 @@ conditions on the bivariate distribution) and is positive otherwise. Since t*,
 the U-statistic corresponding to tau*, is an unbiased estimator of tau* this 
 gives a consistent test of independence. Computing t* naively results an 
 algorithm that takes O(n^4) time where n is the sample size. Luckily it is 
-possible to compute t* much faster (in O(n^2*log(n)) time) using the algorithm 
+possible to compute t* much faster (in O(n^2) time) using the algorithm 
 described in:
+
+Heller, Yair and Heller, Ruth. "Computing the Bergsma Dassios sign-covariance."
+arXiv preprint arXiv:1605.08732 (2016).
+
+building off of the O(n^2*log(n)) algorithm of:
 
 Weihs, Luca, Mathias Drton, and Dennis Leung. "Efficient Computation of the
 Bergsma-Dassios Sign Covariance." arXiv preprint arXiv:1504.00964 (2015).
@@ -50,6 +55,8 @@ independence as follows:
 > tauStarTest(x, y)$pVal
 [1] 0.5692797
 ```
+
+## Where to go
 
 The main functionality of this package is currently included in the functions
 `tStar` (which computes the t* statistic on two input vectors) and `tauStarTest`

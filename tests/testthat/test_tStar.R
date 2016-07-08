@@ -12,15 +12,15 @@ a = function(z) {
 # An extremely naive implementation of tStar just to check things work
 # correctly in general.
 tStarSlow = function(x, y, vStat = F) {
-  if(length(x) != length(y) || length(x) < 4) {
+  if (length(x) != length(y) || length(x) < 4) {
     stop("Input to tStarSlow of invalid length.")
   }
   n = length(x)
   val = 0
-  for(i in 1:n) {
-    for(j in 1:n) {
-      for(k in 1:n) {
-        for(l in 1:n) {
+  for (i in 1:n) {
+    for (j in 1:n) {
+      for (k in 1:n) {
+        for (l in 1:n) {
           inds = c(i,j,k,l)
           if(length(unique(inds)) == 4 || vStat == T) {
             val = val + a(x[inds]) * a(y[inds])
@@ -29,7 +29,7 @@ tStarSlow = function(x, y, vStat = F) {
       }
     }
   }
-  if(vStat) {
+  if (vStat) {
     return(val / n^4)
   } else {
     return(val / (n * (n - 1) * (n - 2) * (n - 3)))
@@ -43,47 +43,67 @@ poissonGaussMix = function(n) {
   return(rpois(n, 5) * poisOrGaus + rnorm(n) * (1 - poisOrGaus))
 }
 
-test_that("tStar agrees with slow implementation", {
+test_that("tStar implementations agree", {
   set.seed(283721)
-  m = 10
-  reps = 10
 
-  for(i in 1:reps) {
+  reps = 3
+  m = 6
+  # Just a sanity check that the R naive version agrees with the C++ naive
+  # version
+  for (i in reps) {
     x <- rnorm(m)
     y <- rnorm(m)
-    ts = tStar(x, y)
-    tvs = tStar(x, y, T)
-    expect_equal(ts, tStarSlow(x, y))
-    expect_equal(tvs, tStarSlow(x, y, T))
-    expect_equal(ts, tStar(x, y, F, slow = T))
-    expect_equal(tvs, tStar(x, y, T, slow = T))
+    expect_equal(tStarSlow(x, y), tStar(x, y, slow = T))
+    expect_equal(tStarSlow(x, y, T), tStar(x, y, T, slow = T))
 
     x <- rpois(m, 5)
     y <- rpois(m, 5)
-    ts = tStar(x, y)
-    tvs = tStar(x, y, T)
-    expect_equal(ts, tStarSlow(x, y))
-    expect_equal(tvs, tStarSlow(x, y, T))
-    expect_equal(ts, tStar(x, y, F, slow = T))
-    expect_equal(tvs, tStar(x, y, T, slow = T))
+    expect_equal(tStarSlow(x, y), tStar(x, y, slow = T))
+    expect_equal(tStarSlow(x, y, T), tStar(x, y, T, slow = T))
 
     x <- rnorm(m)
     y <- rpois(m, 5)
-    ts = tStar(x, y)
-    tvs = tStar(x, y, T)
-    expect_equal(ts, tStarSlow(x, y))
-    expect_equal(tvs, tStarSlow(x, y, T))
-    expect_equal(ts, tStar(x, y, F, slow = T))
-    expect_equal(tvs, tStar(x, y, T, slow = T))
+    expect_equal(tStarSlow(x, y), tStar(x, y, slow = T))
+    expect_equal(tStarSlow(x, y, T), tStar(x, y, T, slow = T))
 
     x <- poissonGaussMix(m)
     y <- poissonGaussMix(m)
-    ts = tStar(x, y)
-    tvs = tStar(x, y, T)
-    expect_equal(ts, tStarSlow(x, y))
-    expect_equal(tvs, tStarSlow(x, y, T))
-    expect_equal(ts, tStar(x, y, F, slow = T))
-    expect_equal(tvs, tStar(x, y, T, slow = T))
+    expect_equal(tStarSlow(x, y), tStar(x, y, slow = T))
+    expect_equal(tStarSlow(x, y, T), tStar(x, y, T, slow = T))
+  }
+
+  m = 30
+  reps = 10
+  methods = c("heller", "weihs", "naive")
+  areAllEq = function(x, y, vstat) {
+    vals = numeric(length(methods))
+    for (i in 1:length(methods)) {
+      vals[i] = tStar(x, y, method = methods[i], vStatistic = vstat)
+    }
+    for (i in 1:(length(methods) - 1)) {
+      expect_equal(vals[i], vals[i + 1])
+    }
+  }
+  for (i in 1:reps) {
+    x <- rnorm(m)
+    y <- rnorm(m)
+    areAllEq(x, y, F)
+    areAllEq(x, y, T)
+
+    x <- rpois(m, 5)
+    y <- rpois(m, 5)
+    areAllEq(x, y, F)
+    areAllEq(x, y, T)
+
+    x <- rnorm(m)
+    y <- rpois(m, 5)
+    areAllEq(x, y, F)
+    areAllEq(x, y, T)
+
+    x <- poissonGaussMix(m)
+    y <- poissonGaussMix(m)
+    areAllEq(x, y, F)
+    areAllEq(x, y, T)
   }
 
   x = rnorm(100)
@@ -91,7 +111,6 @@ test_that("tStar agrees with slow implementation", {
   ts = tStar(x, y)
   tvs = tStar(x, y, T)
   expect_equal(ts, tStar(x, y, slow = T))
-  expect_equal(tvs, tStar(x, y, T, slow = T))
   expect_true(abs(tStar(x, y, resample = T, sampleSize = 10,
                         numResamples = 10000) - ts) < 2*10^-3)
 })
@@ -108,9 +127,9 @@ test_that("tStar errors on bad input", {
 
   expect_error(tStar(1:10, 1:9))
   expect_error(tStar(1:9, 1:10))
-  expect_error(tStar(1:10, 1:10, resample=T, slow=T))
-  expect_error(tStar(1:10, 1:10, resample=T, numResamples=-1))
-  expect_error(tStar(1:10, 1:10, resample=T, sampleSize=-1))
-  expect_error(tStar(1:10, 1:10, vStatistic=T, resample=T))
+  expect_error(tStar(1:10, 1:10, resample = T, slow = T))
+  expect_error(tStar(1:10, 1:10, resample = T, numResamples = -1))
+  expect_error(tStar(1:10, 1:10, resample = T, sampleSize = -1))
+  expect_error(tStar(1:10, 1:10, vStatistic = T, resample = T))
 })
 

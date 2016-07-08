@@ -231,22 +231,22 @@ RcppExport SEXP TauStar_HoeffIndMixedPdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP m
     UNPROTECT(1);
     return __result;
 }
-// TStarFastTiesRCPP
-Rcpp::NumericVector TStarFastTiesRCPP(NumericVector xNumeric, NumericVector yNumeric);
-static SEXP TauStar_TStarFastTiesRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+// TStarHellerAndHellerRCPP
+double TStarHellerAndHellerRCPP(const arma::vec& x, const arma::vec& y);
+static SEXP TauStar_TStarHellerAndHellerRCPP_try(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
-    Rcpp::traits::input_parameter< NumericVector >::type xNumeric(xNumericSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type yNumeric(yNumericSEXP);
-    __result = Rcpp::wrap(TStarFastTiesRCPP(xNumeric, yNumeric));
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    __result = Rcpp::wrap(TStarHellerAndHellerRCPP(x, y));
     return __result;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_TStarFastTiesRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+RcppExport SEXP TauStar_TStarHellerAndHellerRCPP(SEXP xSEXP, SEXP ySEXP) {
     SEXP __result;
     {
         Rcpp::RNGScope __rngScope;
-        __result = PROTECT(TauStar_TStarFastTiesRCPP_try(xNumericSEXP, yNumericSEXP));
+        __result = PROTECT(TauStar_TStarHellerAndHellerRCPP_try(xSEXP, ySEXP));
     }
     Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
     if (__isInterrupt) {
@@ -262,22 +262,84 @@ RcppExport SEXP TauStar_TStarFastTiesRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) 
     UNPROTECT(1);
     return __result;
 }
-// VTStarFastTiesRCPP
-Rcpp::NumericVector VTStarFastTiesRCPP(NumericVector xNumeric, NumericVector yNumeric);
-static SEXP TauStar_VTStarFastTiesRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+// VTStarHellerAndHellerRCPP
+double VTStarHellerAndHellerRCPP(const arma::vec& x, const arma::vec& y);
+static SEXP TauStar_VTStarHellerAndHellerRCPP_try(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    __result = Rcpp::wrap(VTStarHellerAndHellerRCPP(x, y));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP TauStar_VTStarHellerAndHellerRCPP(SEXP xSEXP, SEXP ySEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(TauStar_VTStarHellerAndHellerRCPP_try(xSEXP, ySEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// TStarWeihsEtAlRCPP
+Rcpp::NumericVector TStarWeihsEtAlRCPP(NumericVector xNumeric, NumericVector yNumeric);
+static SEXP TauStar_TStarWeihsEtAlRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::traits::input_parameter< NumericVector >::type xNumeric(xNumericSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type yNumeric(yNumericSEXP);
-    __result = Rcpp::wrap(VTStarFastTiesRCPP(xNumeric, yNumeric));
+    __result = Rcpp::wrap(TStarWeihsEtAlRCPP(xNumeric, yNumeric));
     return __result;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_VTStarFastTiesRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+RcppExport SEXP TauStar_TStarWeihsEtAlRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {
     SEXP __result;
     {
         Rcpp::RNGScope __rngScope;
-        __result = PROTECT(TauStar_VTStarFastTiesRCPP_try(xNumericSEXP, yNumericSEXP));
+        __result = PROTECT(TauStar_TStarWeihsEtAlRCPP_try(xNumericSEXP, yNumericSEXP));
+    }
+    Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
+    if (__isInterrupt) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean __isError = Rf_inherits(__result, "try-error");
+    if (__isError) {
+        SEXP __msgSEXP = Rf_asChar(__result);
+        UNPROTECT(1);
+        Rf_error(CHAR(__msgSEXP));
+    }
+    UNPROTECT(1);
+    return __result;
+}
+// VTStarWeihsEtAlRCPP
+Rcpp::NumericVector VTStarWeihsEtAlRCPP(NumericVector xNumeric, NumericVector yNumeric);
+static SEXP TauStar_VTStarWeihsEtAlRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::traits::input_parameter< NumericVector >::type xNumeric(xNumericSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type yNumeric(yNumericSEXP);
+    __result = Rcpp::wrap(VTStarWeihsEtAlRCPP(xNumeric, yNumeric));
+    return __result;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP TauStar_VTStarWeihsEtAlRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+    SEXP __result;
+    {
+        Rcpp::RNGScope __rngScope;
+        __result = PROTECT(TauStar_VTStarWeihsEtAlRCPP_try(xNumericSEXP, yNumericSEXP));
     }
     Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
     if (__isInterrupt) {
@@ -326,23 +388,23 @@ RcppExport SEXP TauStar_TStarFastResampleRCPP(SEXP xNumericSEXP, SEXP yNumericSE
     UNPROTECT(1);
     return __result;
 }
-// TStarSlowTiesRCPP
-Rcpp::NumericVector TStarSlowTiesRCPP(NumericVector x, NumericVector y, bool vStat);
-static SEXP TauStar_TStarSlowTiesRCPP_try(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
+// TStarNaiveRCPP
+Rcpp::NumericVector TStarNaiveRCPP(NumericVector x, NumericVector y, bool vStat);
+static SEXP TauStar_TStarNaiveRCPP_try(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
     Rcpp::traits::input_parameter< bool >::type vStat(vStatSEXP);
-    __result = Rcpp::wrap(TStarSlowTiesRCPP(x, y, vStat));
+    __result = Rcpp::wrap(TStarNaiveRCPP(x, y, vStat));
     return __result;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_TStarSlowTiesRCPP(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
+RcppExport SEXP TauStar_TStarNaiveRCPP(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
     SEXP __result;
     {
         Rcpp::RNGScope __rngScope;
-        __result = PROTECT(TauStar_TStarSlowTiesRCPP_try(xSEXP, ySEXP, vStatSEXP));
+        __result = PROTECT(TauStar_TStarNaiveRCPP_try(xSEXP, ySEXP, vStatSEXP));
     }
     Rboolean __isInterrupt = Rf_inherits(__result, "interrupted-error");
     if (__isInterrupt) {
@@ -370,10 +432,12 @@ static int TauStar_RcppExport_validate(const char* sig) {
         signatures.insert("arma::vec(*HoeffIndDiscretePdfRCPP)(arma::vec,arma::vec,arma::vec,double)");
         signatures.insert("arma::vec(*HoeffIndMixedCdfRCPP)(arma::vec,arma::vec,double)");
         signatures.insert("arma::vec(*HoeffIndMixedPdfRCPP)(arma::vec,arma::vec,double)");
-        signatures.insert("Rcpp::NumericVector(*TStarFastTiesRCPP)(NumericVector,NumericVector)");
-        signatures.insert("Rcpp::NumericVector(*VTStarFastTiesRCPP)(NumericVector,NumericVector)");
+        signatures.insert("double(*TStarHellerAndHellerRCPP)(const arma::vec&,const arma::vec&)");
+        signatures.insert("double(*VTStarHellerAndHellerRCPP)(const arma::vec&,const arma::vec&)");
+        signatures.insert("Rcpp::NumericVector(*TStarWeihsEtAlRCPP)(NumericVector,NumericVector)");
+        signatures.insert("Rcpp::NumericVector(*VTStarWeihsEtAlRCPP)(NumericVector,NumericVector)");
         signatures.insert("Rcpp::NumericVector(*TStarFastResampleRCPP)(NumericVector,NumericVector,int,int)");
-        signatures.insert("Rcpp::NumericVector(*TStarSlowTiesRCPP)(NumericVector,NumericVector,bool)");
+        signatures.insert("Rcpp::NumericVector(*TStarNaiveRCPP)(NumericVector,NumericVector,bool)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -387,10 +451,12 @@ RcppExport SEXP TauStar_RcppExport_registerCCallable() {
     R_RegisterCCallable("TauStar", "TauStar_HoeffIndDiscretePdfRCPP", (DL_FUNC)TauStar_HoeffIndDiscretePdfRCPP_try);
     R_RegisterCCallable("TauStar", "TauStar_HoeffIndMixedCdfRCPP", (DL_FUNC)TauStar_HoeffIndMixedCdfRCPP_try);
     R_RegisterCCallable("TauStar", "TauStar_HoeffIndMixedPdfRCPP", (DL_FUNC)TauStar_HoeffIndMixedPdfRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_TStarFastTiesRCPP", (DL_FUNC)TauStar_TStarFastTiesRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_VTStarFastTiesRCPP", (DL_FUNC)TauStar_VTStarFastTiesRCPP_try);
+    R_RegisterCCallable("TauStar", "TauStar_TStarHellerAndHellerRCPP", (DL_FUNC)TauStar_TStarHellerAndHellerRCPP_try);
+    R_RegisterCCallable("TauStar", "TauStar_VTStarHellerAndHellerRCPP", (DL_FUNC)TauStar_VTStarHellerAndHellerRCPP_try);
+    R_RegisterCCallable("TauStar", "TauStar_TStarWeihsEtAlRCPP", (DL_FUNC)TauStar_TStarWeihsEtAlRCPP_try);
+    R_RegisterCCallable("TauStar", "TauStar_VTStarWeihsEtAlRCPP", (DL_FUNC)TauStar_VTStarWeihsEtAlRCPP_try);
     R_RegisterCCallable("TauStar", "TauStar_TStarFastResampleRCPP", (DL_FUNC)TauStar_TStarFastResampleRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_TStarSlowTiesRCPP", (DL_FUNC)TauStar_TStarSlowTiesRCPP_try);
+    R_RegisterCCallable("TauStar", "TauStar_TStarNaiveRCPP", (DL_FUNC)TauStar_TStarNaiveRCPP_try);
     R_RegisterCCallable("TauStar", "TauStar_RcppExport_validate", (DL_FUNC)TauStar_RcppExport_validate);
     return R_NilValue;
 }

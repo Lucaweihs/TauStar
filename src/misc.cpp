@@ -19,7 +19,6 @@
  */
 
 #include "misc.h"
-#include <Rcpp.h>
 
 /***********************************************************************/
 /*  FUNCTION:  void Assert(int assertion, char* error)  */
@@ -37,7 +36,7 @@
 /*         compiler will complain if an assertion is used when */
 /*         DEBUG_ASSERT is undefined. */
 /***********************************************************************/
-void Assert(int assertion, char* error) {
+void Assert(int assertion, char const *error) {
   if(!assertion) {
     std::string buf("Assertion Failed: ");
     throw Rcpp::exception(buf.append(error).append("\n").c_str());

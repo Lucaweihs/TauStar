@@ -20,7 +20,6 @@
 
 
 #include "red_black_tree.h"
-#include <Rcpp.h>
 
 /***********************************************************************/
 /*  FUNCTION:  RBTreeCreate */

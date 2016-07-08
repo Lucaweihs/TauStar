@@ -17,7 +17,8 @@
 #'
 #' Computes the t* U-statistic for input data pairs
 #' (x_1,y_1), (x_2,y_2), ..., (x_n,y_n)
-#' using the algorithm developed by Weihs, Drton, and Leung (2015)
+#' using the algorithm developed by Heller and Heller (2016) <arXiv:1605.08732>
+#' building off of the work of Weihs, Drton, and Leung (2015)
 #' <DOI:10.1007/s00180-015-0639-x>.
 #'
 #' @export
@@ -34,15 +35,20 @@
 #'        FALSE, in general you probably don't want to compute the V-statistic via
 #'        resampling as the size of the bias depends on the sampleSize irrespective
 #'        numResamples. Default is resample == FALSE so that t* is computed on all of
-#'        the data, this may be slow for very large sample sizes.
+#'        the data, this may be slow for very large sample sizes. Resampling
+#'        can only be used when the method argument is using its default.
 #' @param numResamples See resample variable description for details, this
 #'        value is ignored if resample == FALSE (ignored by default).
 #' @param sampleSize See resample variable description for details, this value
 #'        is ignored if resample == FALSE (ignored by default).
-#' @param slow If TRUE then will compute the t* statistic using a naive O(n^4)
-#'        algorithm. This option exists to allow for comparisons of the efficient new
-#'        algorithm against the old slow one. At the moment this is not implemented to
-#'        work when resample == TRUE.
+#' @param method which method to use to compute the statistic. Default is
+#'        "fastest" which uses the fastest available method (currently "heller").
+#'        The options are "heller" described in Heller and Heller (2016), "weihs",
+#'        using the algorithm from Weihs et al. (2015), and "naive" using a naive
+#'        algorithm.
+#' @param slow a deprecated option kept for backwards compatability. If TRUE
+#'        then will override the method parameter and compute the t* statistic
+#'        using a naive O(n^4) algorithm.
 #'
 #' @return The numeric value of the t* statistic.
 #'
@@ -50,6 +56,9 @@
 #' Bergsma, Wicher; Dassios, Angelos. A consistent test of independence based
 #' on a sign covariance related to Kendall's tau. \emph{Bernoulli} 20 (2014),
 #' no. 2, 1006--1028.
+#' \cr\cr
+#' Heller, Yair and Heller, Ruth. "Computing the Bergsma Dassios
+#' sign-covariance." arXiv preprint arXiv:1605.08732 (2016).
 #' \cr\cr
 #' Weihs, Luca, Mathias Drton, and Dennis Leung. "Efficient Computation of the
 #' Bergsma-Dassios Sign Covariance." arXiv preprint arXiv:1504.00964 (2015).
@@ -70,54 +79,71 @@
 #'
 #' # Compute t* as a v-statistic
 #' set.seed(923)
-#' tStar(rnorm(100), rnorm(100), vStatistic=TRUE)
+#' tStar(rnorm(100), rnorm(100), vStatistic = TRUE)
 #'
 #' # Compute an approximation of tau* via resampling
 #' set.seed(9492)
-#' tStar(rnorm(10000), rnorm(10000), resample=TRUE, sampleSize=30,
-#'       numResamples=5000)
+#' tStar(rnorm(10000), rnorm(10000), resample = TRUE, sampleSize = 30,
+#'       numResamples = 5000)
 #' }
 tStar <- function(x, y, vStatistic = FALSE, resample = FALSE,
                   numResamples = 500, sampleSize = min(length(x), 1000),
-                  slow = FALSE) {
-  if(!is.numeric(x) || !is.numeric(y)) {
+                  method = "fastest", slow = FALSE) {
+  if (slow) {
+    method = "naive"
+  } else if (method == "fastest") {
+    method = "heller"
+  }
+  if (!is.numeric(x) || !is.numeric(y)) {
     stop("Input x and y to tStar must be numeric.")
   }
-  if(length(x) != length(y) || length(x) < 4) {
+  if (length(x) != length(y) || length(x) < 4) {
     stop("Input x and y to tStar are of the wrong length, they must both have equal length < 4.")
   }
-  if(!is.logical(vStatistic) || length(vStatistic) != 1) {
+  if (!is.logical(vStatistic) || length(vStatistic) != 1) {
     stop("Input parameter vStatistic into function tStar must be a logical T/F value.")
   }
-  if(!is.logical(slow) || length(slow) != 1) {
+  if (!is.logical(slow) || length(slow) != 1) {
     stop("Input parameter slow into function tStar must be a logical T/F value.")
   }
-  if(!is.logical(resample) || length(resample) != 1) {
+  if (!is.logical(resample) || length(resample) != 1) {
     stop("Input parameter resample into function tStar must be a logical T/F value.")
   }
-  if(resample && numResamples <= 0) {
+  if (resample && numResamples <= 0) {
     stop("When resampling the number of resamples must be positive.")
   }
-  if(resample && (sampleSize < 4 || sampleSize > length(x))) {
+  if (resample && (sampleSize < 4 || sampleSize > length(x))) {
     stop("When resampling the sample size must be greater than 3 and less than the length of the input data.")
   }
-  if(resample && slow) {
-    stop("Resampling is not currently implemented with the slow algorithm.")
+  if (resample && method != "heller") {
+    stop("Resampling is not currently implemented for given method.")
   }
-  if(resample && vStatistic) {
+  if (resample && vStatistic) {
     stop("Resampling is not currently implemented when computing V-statistics. Note that you probably don't want to compute the V-statistic via resampling as the size of the bias would depend on the size of subsets chosen independent of the number of resamples.")
   }
-  ord = sort.list(x, method = "quick", na.last = NA)
-  x = x[ord]
-  y = y[ord]
-  if(resample) {
+  if (!(method %in% c("fastest", "heller", "weihs", "naive"))) {
+    stop("Invalid method argument")
+  }
+
+  if (resample) {
     return(TStarFastResampleRCPP(x, y, numResamples, sampleSize))
-  } else if(slow) {
-    return(TStarSlowTiesRCPP(x, y, vStatistic))
-  } else if (vStatistic) {
-    return(VTStarFastTiesRCPP(x, y))
-  } else {
-    return(TStarFastTiesRCPP(x, y))
+  } else if (method == "naive") {
+    return(TStarNaiveRCPP(x, y, vStatistic))
+  } else if (method == "weihs") {
+    ord = sort.list(x, method = "quick", na.last = NA)
+    x = x[ord]
+    y = y[ord]
+    if (vStatistic) {
+      return(VTStarWeihsEtAlRCPP(x, y))
+    } else {
+      return(TStarWeihsEtAlRCPP(x, y))
+    }
+  } else { # method must be "heller"
+    if (vStatistic) {
+      return(VTStarHellerAndHellerRCPP(x, y))
+    } else {
+      return(TStarHellerAndHellerRCPP(x, y))
+    }
   }
 }
 

@@ -16,6 +16,9 @@ read.matrix = function(file) {
   return(read.table(file, sep = ",", as.is = T))
 }
 
+oldw = getOption("warn") # Turn off warnings for the moment
+options(warn = -1)
+
 test_that("pHoeffInd function returns correct values", {
   # Comparing against the values given by the BKR paper
   bkrToHoeff = function(x) {
@@ -114,3 +117,5 @@ test_that("dMixHoeffInd function returns correct values", {
                       dMixHoeffInd(empDens[inds[i],1], p)) < 10^-2)
   }
 })
+
+options(warn = oldw)

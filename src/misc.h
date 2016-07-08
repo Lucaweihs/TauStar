@@ -20,6 +20,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<Rcpp.h>
 
 #ifndef INC_E_MISC_
 #define INC_E_MISC_
@@ -40,7 +41,7 @@
 /*                names beginning with "g".  An example of a global */
 /*                variable name is gNewtonsConstant. */
 
-void Assert(int assertion, char* error);
+void Assert(int assertion, char const *error);
 void * SafeMalloc(size_t size);
 
 #endif
