@@ -34,7 +34,8 @@ double hurwitzZeta(double exponent, double offset, double maxError) {
   double maxSumLength = std::pow(static_cast<double>(2), 27);
   double sumLengthAsDouble = std::max(
     static_cast<double>(
-      std::ceil(std::pow(maxError, -1.0 / exponent)) - std::floor(offset) - 1,
+      std::ceil(std::pow(maxError, -1.0 / exponent)) - std::floor(offset) - 1
+    ),
       15.0
   );
   int sumLength
@@ -116,10 +117,10 @@ std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
     sumLength = 100;
   } else {
     sumLength = std::max(
-      std::ceil((-std::log(maxError / 2.0) +
+      static_cast<int>(0.5 + std::ceil((-std::log(maxError / 2.0) +
         4.0 * std::log(static_cast<double>(h)) +
         2.0 * std::log(static_cast<double>(M_PI * (6 * h - 5) / std::pow(static_cast<double>(6 * (1 - 2 * h)), 2))))
-             / (-std::log(factor))) + 2,
+             / (-std::log(factor))) + 2),
              10);
   }
 
