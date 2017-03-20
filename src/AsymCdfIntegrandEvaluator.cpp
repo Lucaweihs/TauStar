@@ -17,7 +17,6 @@
 
 #include "AsymCdfIntegrandEvaluator.h"
 #include "RcppArmadillo.h"
-using namespace Rcpp;
 
 /***
  * Computes the infinite summation
@@ -31,9 +30,9 @@ double hurwitzZeta(double exponent, double offset, double maxError) {
   if (exponent <= 1.0) {
     Rcpp::stop("Exponent in hurwitzZeta must be > 1");
   }
-  double maxSumLength = std::pow(2, 27);
-  double sumLengthAsDouble = fmax(
-    ceil(std::pow(maxError, -1.0 / exponent)) - floor(offset) - 1, 15.0
+  double maxSumLength = std::pow(static_cast<double>(2), 27);
+  double sumLengthAsDouble = std::fmax(
+    std::ceil(std::pow(maxError, -1.0 / exponent)) - std::floor(offset) - 1, 15.0
   );
   int sumLength
     = (sumLengthAsDouble > maxSumLength) ?maxSumLength : sumLengthAsDouble;
@@ -43,7 +42,7 @@ double hurwitzZeta(double exponent, double offset, double maxError) {
   }
   long double sum = 0;
   for (int i = 0; i <= sumLength; i++) {
-    sum += 1.0 / std::pow(offset + i, exponent);
+    sum += 1.0 / std::pow(static_cast<long double>(offset + i), exponent);
   }
   long double tailInt = (exponent - 1) * 1.0 / std::pow(sumLength + offset + 1,
                          exponent - 1);
@@ -73,8 +72,8 @@ std::complex<double> gridSum(std::complex<double> v, int sideLen) {
  * which square root is returned is undefined.
  */
 std::complex<double> sinhProd(std::complex<double> v, int i) {
-  std::complex<double> a = M_PI * sqrt(v) / (1.0 * i);
-  return(sqrt(a / sinh(a)));
+  std::complex<double> a = M_PI * std::sqrt(v) / (1.0 * i);
+  return(std::sqrt(a / std::sinh(a)));
 }
 
 /***
@@ -86,9 +85,9 @@ std::complex<double> sinhProd(std::complex<double> v, int i) {
  * max specified error.
  */
 double aCoef(int k, int h, double maxError) {
-  double maxHurZeta = 1.0 / ((2 * k - 1) * std::pow(h - 1, 2 * k - 1));
+  double maxHurZeta = 1.0 / ((2 * k - 1) * std::pow(static_cast<double>(h - 1), 2 * k - 1));
   double maxErrorForHurZeta = -maxHurZeta +
-    (1 / 2.0) * sqrt(4 * maxHurZeta * maxHurZeta + 8 * k * maxError);
+    (1 / 2.0) * std::sqrt(static_cast<double>(4 * maxHurZeta * maxHurZeta + 8 * k * maxError));
   int sign = (k % 2 == 0) ? 1 : -1;
   return(sign * std::pow(hurwitzZeta(2 * k, h,
                                      maxErrorForHurZeta), 2.0) / (2 * k));
@@ -106,18 +105,18 @@ std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   double absV = abs(v);
 
   // Half of the max error comes from truncating the summation
-  double factor = absV / std::pow(h, 4.0);
+  double factor = absV / std::pow(static_cast<double>(h), 4.0);
   int sumLength;
   if (factor >= 1) {
     Rprintf("WARNING: h chosen for tailSum is too small and may not result in"
               "inaccuracies. Choose h so that |v|/h^4 < 1 (best if < 1/2).");
     sumLength = 100;
   } else {
-    sumLength = fmax(
-      ceil((-log(maxError / 2.0) +
-        4 * std::log(h) +
-        2 * std::log(M_PI * (6 * h - 5) / std::pow(6 * (1 - 2 * h), 2)))
-             / (-log(factor))) + 2,
+    sumLength = std::fmax(
+      std::ceil((-std::log(maxError / 2.0) +
+        4 * std::log(static_cast<double>(h)) +
+        2 * std::log(static_cast<double>(M_PI * (6 * h - 5) / std::pow(static_cast<double>(6 * (1 - 2 * h)), 2))))
+             / (-std::log(factor))) + 2,
              10);
   }
 

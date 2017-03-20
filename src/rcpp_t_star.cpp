@@ -27,7 +27,7 @@
 #include"red_black_tree.h"
 #include<stdio.h>
 #include<ctype.h>
-#include<math.h>
+#include<cmath>
 
 using namespace Rcpp;
 
@@ -354,8 +354,8 @@ Rcpp::NumericVector TStarWeihsEtAlRCPP(NumericVector xNumeric,
     // equations from the paper to record the number of concordant/discordant
     // quadruples.
 		for (int j = i + 1; j < n; j++) {
-			double minY = fmin(y[i], y[j]);
-			double maxY = fmax(y[i], y[j]);
+			double minY = std::fmin(y[i], y[j]);
+			double maxY = std::fmax(y[i], y[j]);
 
 			int numLessMax = RBNumLessThan(tree, &maxY);
 			int numGreaterMin = RBNumGreaterThan(tree, &minY);
@@ -397,8 +397,8 @@ Rcpp::NumericVector TStarWeihsEtAlRCPP(NumericVector xNumeric,
 			savedYsInds[0] = i;
 		}
 		for(int j = i - 1; j >= 0; j--) {
-			double minY = fmin(y[i], y[j]);
-			double maxY = fmax(y[i], y[j]);
+			double minY = std::fmin(y[i], y[j]);
+			double maxY = std::fmax(y[i], y[j]);
 			if(minY == maxY) {
 				discord -= RBNumGreaterThan(revTree, &maxY) *
           RBNumLessThan(revTree, &maxY);
@@ -472,8 +472,8 @@ Rcpp::NumericVector VTStarWeihsEtAlRCPP(NumericVector xNumeric,
 		concord += .5 * ((bottom * (bottom - 1)) / 2) + .5 * ((top * (top - 1)) / 2)
       + .25 * (top + bottom);
 		for(int j = i + 1; j < n; j++) {
-			double minY = fmin(y[i], y[j]);
-			double maxY = fmax(y[i], y[j]);
+			double minY = std::fmin(y[i], y[j]);
+			double maxY = std::fmax(y[i], y[j]);
 
 			int numLessMax = RBNumLessThan(tree, &maxY);
 			int numGreaterMin = RBNumGreaterThan(tree, &minY);
@@ -517,8 +517,8 @@ Rcpp::NumericVector VTStarWeihsEtAlRCPP(NumericVector xNumeric,
 			savedYsInds[0] = i;
 		}
 		for(int j = i - 1; j >= 0; j--) {
-			double minY = fmin(y[i], y[j]);
-			double maxY = fmax(y[i], y[j]);
+			double minY = std::fmin(y[i], y[j]);
+			double maxY = std::fmax(y[i], y[j]);
 			if(minY == maxY) {
 				discord -= RBNumGreaterThan(revTree, &maxY) * RBNumLessThan(revTree, &maxY);
 			}
@@ -600,10 +600,10 @@ Rcpp::NumericVector TStarFastResampleRCPP(NumericVector xNumeric,
  */
 int bergDassAFunc(double z1, double z2, double z3, double z4) {
   int returnVal = 0;
-  returnVal += (fmax(z1, z3) < fmin(z2, z4)) ? 1 : 0;
-  returnVal += (fmax(z2, z4) < fmin(z1, z3)) ? 1 : 0;
-  returnVal += (fmax(z1, z2) < fmin(z3, z4)) ? -1 : 0;
-  returnVal += (fmax(z3, z4) < fmin(z1, z2)) ? -1 : 0;
+  returnVal += (std::fmax(z1, z3) < std::fmin(z2, z4)) ? 1 : 0;
+  returnVal += (std::fmax(z2, z4) < std::fmin(z1, z3)) ? 1 : 0;
+  returnVal += (std::fmax(z1, z2) < std::fmin(z3, z4)) ? -1 : 0;
+  returnVal += (std::fmax(z3, z4) < std::fmin(z1, z2)) ? -1 : 0;
   return returnVal;
 }
 
@@ -648,11 +648,11 @@ Rcpp::NumericVector TStarNaiveRCPP(NumericVector x, NumericVector y, bool vStat)
   					z[0] = y[i]; z[1] = y[j]; z[2] = y[k]; z[3] = y[l];
   					bubbleSort(z, 4);
 
-  					if ((fmax(x[a], x[b]) < fmin(x[c], x[d])) &&
-  						 ((fmax(y[a], y[b]) < fmin(y[c], y[d])) ||
-  							(fmin(y[a], y[b]) > fmax(y[c], y[d])))) {
+  					if ((std::fmax(x[a], x[b]) < std::fmin(x[c], x[d])) &&
+  						 ((std::fmax(y[a], y[b]) < std::fmin(y[c], y[d])) ||
+  							(std::fmin(y[a], y[b]) > std::fmax(y[c], y[d])))) {
   						sumVal += 16;
-  					} else if ((fmax(x[a], x[b]) < fmin(x[c], x[d])) && (z[1] < z[2])) {
+  					} else if ((std::fmax(x[a], x[b]) < std::fmin(x[c], x[d])) && (z[1] < z[2])) {
   						sumVal -= 8;
   					}
   				}

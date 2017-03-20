@@ -5,7 +5,7 @@
 \title{Computing t*}
 \usage{
 tStar(x, y, vStatistic = FALSE, resample = FALSE, numResamples = 500,
-  sampleSize = min(length(x), 1000), slow = FALSE)
+  sampleSize = min(length(x), 1000), method = "fastest", slow = FALSE)
 }
 \arguments{
 \item{x}{A numeric vector of x values (length >= 4).}
@@ -23,7 +23,8 @@ values are then averaged. Note that this only works when vStatistic ==
 FALSE, in general you probably don't want to compute the V-statistic via
 resampling as the size of the bias depends on the sampleSize irrespective
 numResamples. Default is resample == FALSE so that t* is computed on all of
-the data, this may be slow for very large sample sizes.}
+the data, this may be slow for very large sample sizes. Resampling
+can only be used when the method argument is using its default.}
 
 \item{numResamples}{See resample variable description for details, this
 value is ignored if resample == FALSE (ignored by default).}
@@ -31,10 +32,15 @@ value is ignored if resample == FALSE (ignored by default).}
 \item{sampleSize}{See resample variable description for details, this value
 is ignored if resample == FALSE (ignored by default).}
 
-\item{slow}{If TRUE then will compute the t* statistic using a naive O(n^4)
-algorithm. This option exists to allow for comparisons of the efficient new
-algorithm against the old slow one. At the moment this is not implemented to
-work when resample == TRUE.}
+\item{method}{which method to use to compute the statistic. Default is
+"fastest" which uses the fastest available method (currently "heller").
+The options are "heller" described in Heller and Heller (2016), "weihs",
+using the algorithm from Weihs et al. (2015), and "naive" using a naive
+algorithm.}
+
+\item{slow}{a deprecated option kept for backwards compatability. If TRUE
+then will override the method parameter and compute the t* statistic
+using a naive O(n^4) algorithm.}
 }
 \value{
 The numeric value of the t* statistic.
@@ -42,7 +48,8 @@ The numeric value of the t* statistic.
 \description{
 Computes the t* U-statistic for input data pairs
 (x_1,y_1), (x_2,y_2), ..., (x_n,y_n)
-using the algorithm developed by Weihs, Drton, and Leung (2015)
+using the algorithm developed by Heller and Heller (2016) <arXiv:1605.08732>
+building off of the work of Weihs, Drton, and Leung (2015)
 <DOI:10.1007/s00180-015-0639-x>.
 }
 \examples{
@@ -61,18 +68,21 @@ tStar(rnorm(4000), rnorm(4000)) # near 0
 
 # Compute t* as a v-statistic
 set.seed(923)
-tStar(rnorm(100), rnorm(100), vStatistic=TRUE)
+tStar(rnorm(100), rnorm(100), vStatistic = TRUE)
 
 # Compute an approximation of tau* via resampling
 set.seed(9492)
-tStar(rnorm(10000), rnorm(10000), resample=TRUE, sampleSize=30,
-      numResamples=5000)
+tStar(rnorm(10000), rnorm(10000), resample = TRUE, sampleSize = 30,
+      numResamples = 5000)
 }
 }
 \references{
 Bergsma, Wicher; Dassios, Angelos. A consistent test of independence based
 on a sign covariance related to Kendall's tau. \emph{Bernoulli} 20 (2014),
 no. 2, 1006--1028.
+\cr\cr
+Heller, Yair and Heller, Ruth. "Computing the Bergsma Dassios
+sign-covariance." arXiv preprint arXiv:1605.08732 (2016).
 \cr\cr
 Weihs, Luca, Mathias Drton, and Dennis Leung. "Efficient Computation of the
 Bergsma-Dassios Sign Covariance." arXiv preprint arXiv:1504.00964 (2015).

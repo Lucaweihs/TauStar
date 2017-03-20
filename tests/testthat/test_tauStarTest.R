@@ -25,7 +25,7 @@ test_that("tauStarTest with continuous data.", {
   expect_equal(a$y, y)
   expect_equal(a$tStar, tval)
   expect_equal(a$pVal, 1 - pHoeffInd(n * tval))
-  expect_equal(a$mode, "auto-continuous")
+  expect_equal(a$mode, "continuous")
 
   expect_error(tauStarTest(rnorm(10), rnorm(9)))
 })
@@ -62,7 +62,7 @@ test_that("tauStarTest with discrete data.", {
   expect_equal(a$y, y)
   expect_equal(a$tStar, tval)
   expect_true(abs(a$pVal - (1 - pDisHoeffInd(n * tval, p, q))) <= 10^-2)
-  expect_equal(a$mode, "auto-discrete")
+  expect_equal(a$mode, "discrete")
 
   expect_error(tauStarTest(rnorm(10), rnorm(9), mode="discrete"))
 })
@@ -100,7 +100,7 @@ test_that("tauStarTest with mixed data.", {
   expect_equal(a$y, y)
   expect_equal(a$tStar, tval)
   expect_true(abs(a$pVal - (1 - pMixHoeffInd(n * tval, p))) <= 10^-2)
-  expect_equal(a$mode, "auto-mixed")
+  expect_equal(a$mode, "mixed")
 
   x = rnorm(n)
   expect_warning(tauStarTest(x, y, mode = "mixed"))

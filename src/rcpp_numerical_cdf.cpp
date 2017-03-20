@@ -23,7 +23,7 @@
 
 #include<RcppArmadillo.h>
 #include<algorithm>
-#include<math.h>
+#include<cmath>
 #include<queue>
 #include "AsymCdfIntegrandEvaluator.h"
 #include "AsymPdfIntegrandEvaluator.h"
@@ -163,23 +163,23 @@ double numericalCfInversion(IntegrandEvaluator& intEval, double x, double T,
 
   bisect(positions, values, intEval, x, integrandError);
   double intVal = riemannIntegrate(positions, values);
-  double bisectChange = fabs(oldIntVal - intVal) + convCrit + 1;
+  double bisectChange = std::fabs(static_cast<double>(oldIntVal - intVal)) + convCrit + 1;
   oldIntVal = intVal;
 
   doubleWidth(positions, values, intEval, x, integrandError);
-  double widthChange = fabs(oldIntVal - intVal) + convCrit + 1;
+  double widthChange = std::fabs(static_cast<double>(oldIntVal - intVal)) + convCrit + 1;
 
   int k = 0;
-  while (k < 5 || (fmax(bisectChange, widthChange) >= convCrit && k < maxIter)) {
+  while (k < 5 || (std::fmax(bisectChange, widthChange) >= convCrit && k < maxIter)) {
     oldIntVal = intVal;
     if (bisectChange > widthChange) {
       bisect(positions, values, intEval, x, integrandError);
       intVal = riemannIntegrate(positions, values);
-      bisectChange = fabs(oldIntVal - intVal);
+      bisectChange = std::fabs(static_cast<double>(oldIntVal - intVal));
     } else {
       doubleWidth(positions, values, intEval, x, integrandError);
       intVal = riemannIntegrate(positions, values);
-      widthChange = fabs(oldIntVal - intVal);
+      widthChange = std::fabs(static_cast<double>(oldIntVal - intVal));
     }
     k++;
   }
@@ -195,7 +195,7 @@ double numericalCfInversion(IntegrandEvaluator& intEval, double x, double T,
  * A simple function used to bound values to be within [0,1].
  */
 double boundInZeroOne(double x) {
-  return fmin(fmax(x, 0), 1);
+  return std::fmin(std::fmax(x, 0), 1);
 }
 
 /***
@@ -220,7 +220,7 @@ arma::vec HoeffIndPdfRCPP(arma::vec x, double maxError) {
   AsymPdfIntegrandEvaluator apie;
   arma::vec pdfVals(x.size());
   for (int i = 0; i < x.size(); i++) {
-    pdfVals[i] = fmax(
+    pdfVals[i] = std::fmax(
       numericalCfInversion(apie, x[i], 50.0, maxError, 12),
       0); // TODO: 100.0 hardcoded for now
   }
@@ -263,9 +263,9 @@ arma::vec eigenForDiscreteProbs(arma::vec p) {
       if (i != j) {
         symMat(i,j) -= cdf[i] * (1 - cdf[i]) + (q1[j-1] - q1[i]);
         symMat(j,i) = symMat(i,j);
-        symMat(j,i) *= sqrt(p[i] * p[j]);
+        symMat(j,i) *= std::sqrt(p[i] * p[j]);
       }
-      symMat(i,j) *= sqrt(p[i] * p[j]);
+      symMat(i,j) *= std::sqrt(p[i] * p[j]);
     }
   }
   return arma::eig_sym(symMat);
@@ -303,7 +303,7 @@ arma::vec HoeffIndDiscretePdfRCPP(arma::vec x, arma::vec eigenP,
                                                4000000.0);
   arma::vec pdfVals(x.size());
   for (int i = 0; i < x.size(); i++) {
-    pdfVals[i] = fmax(numericalCfInversion(adpie, x[i], 400.0, maxError, 17),
+    pdfVals[i] = std::fmax(numericalCfInversion(adpie, x[i], 400.0, maxError, 17),
                       0);
   }
   return pdfVals;
@@ -331,7 +331,7 @@ arma::vec HoeffIndMixedPdfRCPP(arma::vec x, arma::vec eigenP, double maxError) {
   AsymMixedPdfIntegrandEvaluator ampie(eigenP);
   arma::vec pdfVals(x.size());
   for (int i = 0; i < x.size(); i++) {
-    pdfVals[i] = fmax(numericalCfInversion(ampie, x[i], 20.0, maxError, 12), 0);
+    pdfVals[i] = std::fmax(numericalCfInversion(ampie, x[i], 20.0, maxError, 12), 0);
   }
   return pdfVals;
 }

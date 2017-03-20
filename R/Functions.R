@@ -485,6 +485,8 @@ qMixHoeffInd <- function(p, probs, error = 10^-4) {
 #'
 #' A simple print function for tstest (Tau* test) objects.
 #'
+#' @export
+#'
 #' @param tsObj the tstest object to be printed
 print.tstest <- function(tsObj) {
   asymTest = F
@@ -503,7 +505,7 @@ print.tstest <- function(tsObj) {
     df = cbind(df, round(tsObj$pVal, 5))
     colnames(df) = c("t* value", "Asym. p-val")
   } else {
-    df = cbind(df, round(tsObj$permPVal, 5))
+    df = cbind(df, round(tsObj$pVal, 5))
     colnames(df) = c("t* value", "Perm. p-val")
   }
   row.names(df) = ""
@@ -608,7 +610,7 @@ tauStarTest <- function(x, y, mode="auto", resamples = 1000) {
     } else {
       mode = "continuous"
     }
-    toReturn$mode = paste(toReturn$mode, mode, sep = "-")
+    toReturn$mode = mode
   }
 
   if (mode == "continuous") {

@@ -16,7 +16,6 @@
  */
 
 #include "AsymDiscreteCdfIntegrandEvaluator.h"
-using namespace Rcpp;
 
 typedef AsymDiscreteCdfIntegrandEvaluator ADCIE;
 

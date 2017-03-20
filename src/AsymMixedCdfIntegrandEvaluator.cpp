@@ -16,7 +16,6 @@
  */
 
 #include "AsymMixedCdfIntegrandEvaluator.h"
-using namespace Rcpp;
 
 typedef AsymMixedCdfIntegrandEvaluator AMCIE;
 
@@ -26,9 +25,9 @@ int piRemSign(double x) {
   if (x == 0) {
     return 0;
   } else if (x > 0) {
-    return (fmod(x, 2 * M_PI) <= M_PI) ? 1 : -1;
+    return (std::fmod(x, 2 * M_PI) <= M_PI) ? 1 : -1;
   } else {
-    return (fmod(x, 2 * M_PI) >= -M_PI) ? 1 : -1;
+    return (std::fmod(x, 2 * M_PI) >= -M_PI) ? 1 : -1;
   }
 }
 
@@ -36,11 +35,11 @@ int getSinhSign(double rate) {
   int j = 0;
   double sum = 0;
   double remainder = 0.5 * rate * M_PI * M_PI / 6.0;
-  while (fabs(remainder) >= M_PI ||
+  while (std::fabs(remainder) >= M_PI ||
          (piRemSign(sum) != piRemSign(sum + remainder))) {
     j++;
     double v = rate / ((1.0 * j) * j);
-    sum += 0.5 * asin(v / sqrt(1 + v * v));
+    sum += 0.5 * std::asin(v / std::sqrt(1 + v * v));
     remainder -= 0.5 * v;
     if (j % 10000 == 0) {
       break;
@@ -58,9 +57,9 @@ std::complex<double> AMCIE::integrand(double x, double t, double maxError) {
 
   std::complex<double> sum = 0;
   std::complex<double> v(0, 12.0 * (-2.0 * t) / (M_PI * M_PI));
-  double precision = pow(10, -15);
+  double precision = std::pow(static_cast<double>(10), -15);
   for(int i = 0; i < eigenP.size(); i++) {
-    if (fabs(eigenP[i]) > precision) {
+    if (std::fabs(eigenP[i]) > precision) {
       int sign = getSinhSign((v * eigenP[i]).imag());
       std::complex<double> sinhProdVal = sinhProd(v * eigenP[i], 1);
       if (sinhProdVal.imag() * sign <= 0) {

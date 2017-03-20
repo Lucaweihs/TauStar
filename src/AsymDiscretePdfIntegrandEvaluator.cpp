@@ -16,7 +16,6 @@
  */
 
 #include "AsymDiscretePdfIntegrandEvaluator.h"
-using namespace Rcpp;
 
 typedef AsymDiscretePdfIntegrandEvaluator ADPIE;
 
