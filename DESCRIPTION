@@ -2,7 +2,7 @@ Package: TauStar
 Type: Package
 Title: Efficient Computation and Testing of the Bergsma-Dassios Sign Covariance
 Version: 1.1.3
-Date: 2016-2-13
+Date: 2017-3-20
 Authors@R: c(person("Luca", "Weihs", email="lucaw@uw.edu", role=c("aut", "cre")),
             person("Emin", "Martinian", role=c("ctb"), comment="Created the red-black tree library included in package."))
 Maintainer: Luca Weihs <lucaw@uw.edu>
@@ -15,8 +15,8 @@ Description: Computes the t* statistic corresponding to the tau* population
           Nandy, Weihs, and Drton (2016) <http://arxiv.org/abs/1602.04387>.
 License: GPL (>= 3)
 Imports:
-    Rcpp (>= 0.11.4)
+    Rcpp (>= 0.12.10)
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

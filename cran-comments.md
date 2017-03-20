@@ -1,13 +1,5 @@
-## Resubmission
-This is a resubmission. In this version I have:
-
-* Changed the title field to avoid the conflict between title case and the
-  (lowecase) name of a statistic
-  
-* Changed arXiv references to include their full URL.
-
 ## Test environments
-* local OS X install, R 3.2.3
+* local OS X install, R 3.3.2
 * Using devtools::build_win()
 
 ## R CMD check results

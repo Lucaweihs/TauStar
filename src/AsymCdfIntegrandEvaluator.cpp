@@ -102,7 +102,7 @@ double aCoef(int k, int h, double maxError) {
 std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
   std::complex<double> sum = 0;
   std::complex<double> vProd = 1;
-  double absV = abs(v);
+  double absV = std::abs(v);
 
   // Half of the max error comes from truncating the summation
   double factor = absV / std::pow(static_cast<double>(h), 4.0);
@@ -142,12 +142,12 @@ std::complex<double> asymContCharFunction(double t, double maxError) {
     return 1;
   }
   std::complex<double> v(0, 36 * (-2.0 * t) / std::pow(M_PI, 4.0));
-  int h = ceil(std::pow(2.0 * abs(v), 1.0 / 4.0)) + 2;
+  int h = std::ceil(std::pow(2.0 * std::abs(v), 1.0 / 4.0)) + 2;
   std::complex<double> sum = -gridSum(v, h - 1);
   for (int i = 1; i <= h - 1; i++) {
     sum += 2.0 * std::log(sinhProd(v, i));
   }
-  sum += tailSum(v, h, maxError / abs(std::exp(sum)));
+  sum += tailSum(v, h, maxError / std::abs(std::exp(sum)));
   return(std::exp(sum));
 }
 

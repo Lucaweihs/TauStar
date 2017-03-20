@@ -32,8 +32,8 @@ std::complex<double> ADCIE::integrand(double x, double t, double maxError) {
   std::complex<double> sum = 0;
   for(int i = 0; i < eigenP.size(); i++) {
     for(int j = 0; j < eigenQ.size(); j++) {
-      sum += -0.5 * log(1.0 - 8.0 * I * t * eigenP[i] * eigenQ[j]);
+      sum += -0.5 * std::log(1.0 - 8.0 * I * t * eigenP[i] * eigenQ[j]);
     }
   }
-  return 1 / (2 * M_PI) * exp(sum) * (1.0 - exp(-I * t * x)) / (I * t);
+  return 1 / (2 * M_PI) * std::exp(sum) * (1.0 - std::exp(-I * t * x)) / (I * t);
 }

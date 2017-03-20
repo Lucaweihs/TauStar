@@ -17,4 +17,3 @@ Computes the eigenvalues needed to determine the asymptotic distributions
 in the mixed/discrete cases. See Nandy, Weihs, and Drton (2016)
 <http://arxiv.org/abs/1602.04387> for more details.
 }
-

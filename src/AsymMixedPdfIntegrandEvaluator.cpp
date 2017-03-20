@@ -38,8 +38,8 @@ std::complex<double> AMPIE::integrand(double x, double t, double maxError) {
       if (sinhProdVal.imag() * sign <= 0) {
         sinhProdVal *= -1;
       }
-      sum += log(sinhProdVal);
+      sum += std::log(sinhProdVal);
     }
   }
-  return 1 / (2 * M_PI) * exp(sum) * exp(-I * t * x);
+  return 1 / (2 * M_PI) * std::exp(sum) * std::exp(-I * t * x);
 }

@@ -15,4 +15,3 @@ TRUE or FALSE
 \description{
 Determines if input vector is a valid vector of real valued observations
 }
-

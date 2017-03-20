@@ -24,7 +24,7 @@ std::complex<double> AsymPdfIntegrandEvaluator::integrand(double x, double t,
   if (t == 0) {
     val = x;
   } else {
-    val = asymContCharFunction(t, maxError * t / 2.0) * exp(-i * t * x);
+    val = asymContCharFunction(t, maxError * t / 2.0) * std::exp(-i * t * x);
   }
   return val / (2.0 * M_PI);
 }

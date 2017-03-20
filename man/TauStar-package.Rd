@@ -65,4 +65,12 @@ Bergsma-Dassios Sign Covariance. \emph{Computational Statistics}, x:x-x,
 Preetam Nandy, Luca Weihs, and Mathias Drton. Large-Sample Theory for the
 Bergsma-Dassios Sign Covariance. arXiv preprint arXiv:1602.04387. 2016.
 }
+\author{
+\strong{Maintainer}: Luca Weihs \email{lucaw@uw.edu}
 
+Other contributors:
+\itemize{
+  \item Emin Martinian (Created the red-black tree library included in package.) [contributor]
+}
+
+}

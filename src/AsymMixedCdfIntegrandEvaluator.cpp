@@ -65,8 +65,8 @@ std::complex<double> AMCIE::integrand(double x, double t, double maxError) {
       if (sinhProdVal.imag() * sign <= 0) {
         sinhProdVal *= -1;
       }
-      sum += log(sinhProdVal);
+      sum += std::log(sinhProdVal);
     }
   }
-  return 1 / (2 * M_PI) * exp(sum) * (1.0 - exp(-I * t * x)) / (I * t);
+  return 1 / (2 * M_PI) * std::exp(sum) * (1.0 - std::exp(-I * t * x)) / (I * t);
 }

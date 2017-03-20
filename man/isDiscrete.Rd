@@ -17,4 +17,3 @@ Attempts to determine if the input data is from a discrete distribution. Will
 return true if the data type is of type integer or there are non-unique
 values.
 }
-

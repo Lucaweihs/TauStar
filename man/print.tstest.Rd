@@ -4,12 +4,13 @@
 \alias{print.tstest}
 \title{Print Tau* Test Results}
 \usage{
-\method{print}{tstest}(tsObj)
+\method{print}{tstest}(x, ...)
 }
 \arguments{
-\item{tsObj}{the tstest object to be printed}
+\item{x}{the tstest object to be printed}
+
+\item{...}{ignored.}
 }
 \description{
 A simple print function for tstest (Tau* test) objects.
 }
-

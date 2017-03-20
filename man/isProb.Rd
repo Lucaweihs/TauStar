@@ -15,4 +15,3 @@ TRUE if conditions are met, FALSE if otherwise
 \description{
 Checks if the input vector has a single entry that is between 0 and 1
 }
-

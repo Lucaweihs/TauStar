@@ -87,4 +87,3 @@ sign-covariance." arXiv preprint arXiv:1605.08732 (2016).
 Weihs, Luca, Mathias Drton, and Dennis Leung. "Efficient Computation of the
 Bergsma-Dassios Sign Covariance." arXiv preprint arXiv:1504.00964 (2015).
 }
-

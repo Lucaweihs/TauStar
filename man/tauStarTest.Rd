@@ -51,4 +51,3 @@ print(testResults$pVal) # small p-value
 Preetam Nandy, Luca Weihs, and Mathias Drton. Large-Sample Theory for the
 Bergsma-Dassios Sign Covariance. arXiv preprint arXiv:1602.04387. 2016.
 }
-

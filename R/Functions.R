@@ -487,25 +487,26 @@ qMixHoeffInd <- function(p, probs, error = 10^-4) {
 #'
 #' @export
 #'
-#' @param tsObj the tstest object to be printed
-print.tstest <- function(tsObj) {
+#' @param x the tstest object to be printed
+#' @param ... ignored.
+print.tstest <- function(x, ...) {
   asymTest = F
-  if (tsObj$mode %in% c("continuous", "discrete", "mixed")) {
-    cat(paste("Test Type: asymptotic", tsObj$mode, "\n"))
+  if (x$mode %in% c("continuous", "discrete", "mixed")) {
+    cat(paste("Test Type: asymptotic", x$mode, "\n"))
     asymTest = T
   } else {
-    cat(paste("Test Type: permutation (", tsObj$resamples," simulations)\n",
+    cat(paste("Test Type: permutation (", x$resamples," simulations)\n",
               sep = ""))
   }
-  cat(paste("Input Length:", length(tsObj$x), "\n\n"))
+  cat(paste("Input Length:", length(x$x), "\n\n"))
 
   cat(paste("Results:\n"))
-  df = data.frame(round(tsObj$tStar, 5))
+  df = data.frame(round(x$tStar, 5))
   if (asymTest) {
-    df = cbind(df, round(tsObj$pVal, 5))
+    df = cbind(df, round(x$pVal, 5))
     colnames(df) = c("t* value", "Asym. p-val")
   } else {
-    df = cbind(df, round(tsObj$pVal, 5))
+    df = cbind(df, round(x$pVal, 5))
     colnames(df) = c("t* value", "Perm. p-val")
   }
   row.names(df) = ""

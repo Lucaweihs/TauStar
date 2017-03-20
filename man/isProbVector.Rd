@@ -15,4 +15,3 @@ TRUE if conditions are met, FALSE if otherwise
 \description{
 Checks if the input vector has entries that sum to 1 and are non-negative
 }
-
