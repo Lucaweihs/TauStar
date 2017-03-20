@@ -17,6 +17,7 @@
 
 #include "AsymCdfIntegrandEvaluator.h"
 #include "RcppArmadillo.h"
+#include <algorithm>
 
 /***
  * Computes the infinite summation
@@ -31,8 +32,10 @@ double hurwitzZeta(double exponent, double offset, double maxError) {
     Rcpp::stop("Exponent in hurwitzZeta must be > 1");
   }
   double maxSumLength = std::pow(static_cast<double>(2), 27);
-  double sumLengthAsDouble = std::fmax(
-    std::ceil(std::pow(maxError, -1.0 / exponent)) - std::floor(offset) - 1, 15.0
+  double sumLengthAsDouble = std::max(
+    static_cast<double>(
+      std::ceil(std::pow(maxError, -1.0 / exponent)) - std::floor(offset) - 1,
+      15.0
   );
   int sumLength
     = (sumLengthAsDouble > maxSumLength) ?maxSumLength : sumLengthAsDouble;
@@ -112,10 +115,10 @@ std::complex<double> tailSum(std::complex<double> v, int h, double maxError) {
               "inaccuracies. Choose h so that |v|/h^4 < 1 (best if < 1/2).");
     sumLength = 100;
   } else {
-    sumLength = std::fmax(
+    sumLength = std::max(
       std::ceil((-std::log(maxError / 2.0) +
-        4 * std::log(static_cast<double>(h)) +
-        2 * std::log(static_cast<double>(M_PI * (6 * h - 5) / std::pow(static_cast<double>(6 * (1 - 2 * h)), 2))))
+        4.0 * std::log(static_cast<double>(h)) +
+        2.0 * std::log(static_cast<double>(M_PI * (6 * h - 5) / std::pow(static_cast<double>(6 * (1 - 2 * h)), 2))))
              / (-std::log(factor))) + 2,
              10);
   }
