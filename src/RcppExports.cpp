@@ -512,3 +512,26 @@ RcppExport SEXP _TauStar_RcppExport_registerCCallable() {
     R_RegisterCCallable("TauStar", "_TauStar_RcppExport_validate", (DL_FUNC)_TauStar_RcppExport_validate);
     return R_NilValue;
 }
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_TauStar_HoeffIndCdfRCPP", (DL_FUNC) &_TauStar_HoeffIndCdfRCPP, 2},
+    {"_TauStar_HoeffIndPdfRCPP", (DL_FUNC) &_TauStar_HoeffIndPdfRCPP, 2},
+    {"_TauStar_eigenForDiscreteProbs", (DL_FUNC) &_TauStar_eigenForDiscreteProbs, 1},
+    {"_TauStar_HoeffIndDiscreteCdfRCPP", (DL_FUNC) &_TauStar_HoeffIndDiscreteCdfRCPP, 4},
+    {"_TauStar_HoeffIndDiscretePdfRCPP", (DL_FUNC) &_TauStar_HoeffIndDiscretePdfRCPP, 4},
+    {"_TauStar_HoeffIndMixedCdfRCPP", (DL_FUNC) &_TauStar_HoeffIndMixedCdfRCPP, 3},
+    {"_TauStar_HoeffIndMixedPdfRCPP", (DL_FUNC) &_TauStar_HoeffIndMixedPdfRCPP, 3},
+    {"_TauStar_TStarHellerAndHellerRCPP", (DL_FUNC) &_TauStar_TStarHellerAndHellerRCPP, 2},
+    {"_TauStar_VTStarHellerAndHellerRCPP", (DL_FUNC) &_TauStar_VTStarHellerAndHellerRCPP, 2},
+    {"_TauStar_TStarWeihsEtAlRCPP", (DL_FUNC) &_TauStar_TStarWeihsEtAlRCPP, 2},
+    {"_TauStar_VTStarWeihsEtAlRCPP", (DL_FUNC) &_TauStar_VTStarWeihsEtAlRCPP, 2},
+    {"_TauStar_TStarFastResampleRCPP", (DL_FUNC) &_TauStar_TStarFastResampleRCPP, 4},
+    {"_TauStar_TStarNaiveRCPP", (DL_FUNC) &_TauStar_TStarNaiveRCPP, 3},
+    {"_TauStar_RcppExport_registerCCallable", (DL_FUNC) &_TauStar_RcppExport_registerCCallable, 0},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_TauStar(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+}

@@ -15,8 +15,8 @@ Description: Computes the t* statistic corresponding to the tau* population
           Nandy, Weihs, and Drton (2016) <http://arxiv.org/abs/1602.04387>.
 License: GPL (>= 3)
 Imports:
-    Rcpp (>= 0.12.10)
+    Rcpp (>= 1.0.1)
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     testthat
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

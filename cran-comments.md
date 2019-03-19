@@ -1,6 +1,6 @@
 ## Test environments
-* local OS X install, R-devel 3.4 (2017-03-19 r72368)
-* ubuntu 12.04 (on travis-ci), R 3.3.2
+* Local OS X install, R 3.5.3
+* Ubuntu 14.04.5 (on travis-ci), R 3.5.2
 * Using devtools::build_win()
 
 ## R CMD check results
