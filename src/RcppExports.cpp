@@ -11,7 +11,7 @@ using namespace Rcpp;
 
 // HoeffIndCdfRCPP
 arma::vec HoeffIndCdfRCPP(arma::vec x, double maxError);
-static SEXP TauStar_HoeffIndCdfRCPP_try(SEXP xSEXP, SEXP maxErrorSEXP) {
+static SEXP _TauStar_HoeffIndCdfRCPP_try(SEXP xSEXP, SEXP maxErrorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
@@ -20,16 +20,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_HoeffIndCdfRCPP(SEXP xSEXP, SEXP maxErrorSEXP) {
+RcppExport SEXP _TauStar_HoeffIndCdfRCPP(SEXP xSEXP, SEXP maxErrorSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_HoeffIndCdfRCPP_try(xSEXP, maxErrorSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_HoeffIndCdfRCPP_try(xSEXP, maxErrorSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -42,7 +46,7 @@ RcppExport SEXP TauStar_HoeffIndCdfRCPP(SEXP xSEXP, SEXP maxErrorSEXP) {
 }
 // HoeffIndPdfRCPP
 arma::vec HoeffIndPdfRCPP(arma::vec x, double maxError);
-static SEXP TauStar_HoeffIndPdfRCPP_try(SEXP xSEXP, SEXP maxErrorSEXP) {
+static SEXP _TauStar_HoeffIndPdfRCPP_try(SEXP xSEXP, SEXP maxErrorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
@@ -51,16 +55,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_HoeffIndPdfRCPP(SEXP xSEXP, SEXP maxErrorSEXP) {
+RcppExport SEXP _TauStar_HoeffIndPdfRCPP(SEXP xSEXP, SEXP maxErrorSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_HoeffIndPdfRCPP_try(xSEXP, maxErrorSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_HoeffIndPdfRCPP_try(xSEXP, maxErrorSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -73,7 +81,7 @@ RcppExport SEXP TauStar_HoeffIndPdfRCPP(SEXP xSEXP, SEXP maxErrorSEXP) {
 }
 // eigenForDiscreteProbs
 arma::vec eigenForDiscreteProbs(arma::vec p);
-static SEXP TauStar_eigenForDiscreteProbs_try(SEXP pSEXP) {
+static SEXP _TauStar_eigenForDiscreteProbs_try(SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< arma::vec >::type p(pSEXP);
@@ -81,16 +89,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_eigenForDiscreteProbs(SEXP pSEXP) {
+RcppExport SEXP _TauStar_eigenForDiscreteProbs(SEXP pSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_eigenForDiscreteProbs_try(pSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_eigenForDiscreteProbs_try(pSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -103,7 +115,7 @@ RcppExport SEXP TauStar_eigenForDiscreteProbs(SEXP pSEXP) {
 }
 // HoeffIndDiscreteCdfRCPP
 arma::vec HoeffIndDiscreteCdfRCPP(arma::vec x, arma::vec eigenP, arma::vec eigenQ, double maxError);
-static SEXP TauStar_HoeffIndDiscreteCdfRCPP_try(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
+static SEXP _TauStar_HoeffIndDiscreteCdfRCPP_try(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
@@ -114,16 +126,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_HoeffIndDiscreteCdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
+RcppExport SEXP _TauStar_HoeffIndDiscreteCdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_HoeffIndDiscreteCdfRCPP_try(xSEXP, eigenPSEXP, eigenQSEXP, maxErrorSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_HoeffIndDiscreteCdfRCPP_try(xSEXP, eigenPSEXP, eigenQSEXP, maxErrorSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -136,7 +152,7 @@ RcppExport SEXP TauStar_HoeffIndDiscreteCdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEX
 }
 // HoeffIndDiscretePdfRCPP
 arma::vec HoeffIndDiscretePdfRCPP(arma::vec x, arma::vec eigenP, arma::vec eigenQ, double maxError);
-static SEXP TauStar_HoeffIndDiscretePdfRCPP_try(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
+static SEXP _TauStar_HoeffIndDiscretePdfRCPP_try(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
@@ -147,16 +163,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_HoeffIndDiscretePdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
+RcppExport SEXP _TauStar_HoeffIndDiscretePdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP eigenQSEXP, SEXP maxErrorSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_HoeffIndDiscretePdfRCPP_try(xSEXP, eigenPSEXP, eigenQSEXP, maxErrorSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_HoeffIndDiscretePdfRCPP_try(xSEXP, eigenPSEXP, eigenQSEXP, maxErrorSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -169,7 +189,7 @@ RcppExport SEXP TauStar_HoeffIndDiscretePdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEX
 }
 // HoeffIndMixedCdfRCPP
 arma::vec HoeffIndMixedCdfRCPP(arma::vec x, arma::vec eigenP, double maxError);
-static SEXP TauStar_HoeffIndMixedCdfRCPP_try(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
+static SEXP _TauStar_HoeffIndMixedCdfRCPP_try(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
@@ -179,16 +199,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_HoeffIndMixedCdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
+RcppExport SEXP _TauStar_HoeffIndMixedCdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_HoeffIndMixedCdfRCPP_try(xSEXP, eigenPSEXP, maxErrorSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_HoeffIndMixedCdfRCPP_try(xSEXP, eigenPSEXP, maxErrorSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -201,7 +225,7 @@ RcppExport SEXP TauStar_HoeffIndMixedCdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP m
 }
 // HoeffIndMixedPdfRCPP
 arma::vec HoeffIndMixedPdfRCPP(arma::vec x, arma::vec eigenP, double maxError);
-static SEXP TauStar_HoeffIndMixedPdfRCPP_try(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
+static SEXP _TauStar_HoeffIndMixedPdfRCPP_try(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
@@ -211,16 +235,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_HoeffIndMixedPdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
+RcppExport SEXP _TauStar_HoeffIndMixedPdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP maxErrorSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_HoeffIndMixedPdfRCPP_try(xSEXP, eigenPSEXP, maxErrorSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_HoeffIndMixedPdfRCPP_try(xSEXP, eigenPSEXP, maxErrorSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -233,7 +261,7 @@ RcppExport SEXP TauStar_HoeffIndMixedPdfRCPP(SEXP xSEXP, SEXP eigenPSEXP, SEXP m
 }
 // TStarHellerAndHellerRCPP
 double TStarHellerAndHellerRCPP(const arma::vec& x, const arma::vec& y);
-static SEXP TauStar_TStarHellerAndHellerRCPP_try(SEXP xSEXP, SEXP ySEXP) {
+static SEXP _TauStar_TStarHellerAndHellerRCPP_try(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
@@ -242,16 +270,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_TStarHellerAndHellerRCPP(SEXP xSEXP, SEXP ySEXP) {
+RcppExport SEXP _TauStar_TStarHellerAndHellerRCPP(SEXP xSEXP, SEXP ySEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_TStarHellerAndHellerRCPP_try(xSEXP, ySEXP));
+        rcpp_result_gen = PROTECT(_TauStar_TStarHellerAndHellerRCPP_try(xSEXP, ySEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -264,7 +296,7 @@ RcppExport SEXP TauStar_TStarHellerAndHellerRCPP(SEXP xSEXP, SEXP ySEXP) {
 }
 // VTStarHellerAndHellerRCPP
 double VTStarHellerAndHellerRCPP(const arma::vec& x, const arma::vec& y);
-static SEXP TauStar_VTStarHellerAndHellerRCPP_try(SEXP xSEXP, SEXP ySEXP) {
+static SEXP _TauStar_VTStarHellerAndHellerRCPP_try(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
@@ -273,16 +305,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_VTStarHellerAndHellerRCPP(SEXP xSEXP, SEXP ySEXP) {
+RcppExport SEXP _TauStar_VTStarHellerAndHellerRCPP(SEXP xSEXP, SEXP ySEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_VTStarHellerAndHellerRCPP_try(xSEXP, ySEXP));
+        rcpp_result_gen = PROTECT(_TauStar_VTStarHellerAndHellerRCPP_try(xSEXP, ySEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -295,7 +331,7 @@ RcppExport SEXP TauStar_VTStarHellerAndHellerRCPP(SEXP xSEXP, SEXP ySEXP) {
 }
 // TStarWeihsEtAlRCPP
 Rcpp::NumericVector TStarWeihsEtAlRCPP(NumericVector xNumeric, NumericVector yNumeric);
-static SEXP TauStar_TStarWeihsEtAlRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+static SEXP _TauStar_TStarWeihsEtAlRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xNumeric(xNumericSEXP);
@@ -304,16 +340,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_TStarWeihsEtAlRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+RcppExport SEXP _TauStar_TStarWeihsEtAlRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_TStarWeihsEtAlRCPP_try(xNumericSEXP, yNumericSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_TStarWeihsEtAlRCPP_try(xNumericSEXP, yNumericSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -326,7 +366,7 @@ RcppExport SEXP TauStar_TStarWeihsEtAlRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP)
 }
 // VTStarWeihsEtAlRCPP
 Rcpp::NumericVector VTStarWeihsEtAlRCPP(NumericVector xNumeric, NumericVector yNumeric);
-static SEXP TauStar_VTStarWeihsEtAlRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+static SEXP _TauStar_VTStarWeihsEtAlRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xNumeric(xNumericSEXP);
@@ -335,16 +375,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_VTStarWeihsEtAlRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {
+RcppExport SEXP _TauStar_VTStarWeihsEtAlRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_VTStarWeihsEtAlRCPP_try(xNumericSEXP, yNumericSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_VTStarWeihsEtAlRCPP_try(xNumericSEXP, yNumericSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -357,7 +401,7 @@ RcppExport SEXP TauStar_VTStarWeihsEtAlRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP
 }
 // TStarFastResampleRCPP
 Rcpp::NumericVector TStarFastResampleRCPP(NumericVector xNumeric, NumericVector yNumeric, int numResamples, int sampleSize);
-static SEXP TauStar_TStarFastResampleRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP, SEXP numResamplesSEXP, SEXP sampleSizeSEXP) {
+static SEXP _TauStar_TStarFastResampleRCPP_try(SEXP xNumericSEXP, SEXP yNumericSEXP, SEXP numResamplesSEXP, SEXP sampleSizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< NumericVector >::type xNumeric(xNumericSEXP);
@@ -368,16 +412,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_TStarFastResampleRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP, SEXP numResamplesSEXP, SEXP sampleSizeSEXP) {
+RcppExport SEXP _TauStar_TStarFastResampleRCPP(SEXP xNumericSEXP, SEXP yNumericSEXP, SEXP numResamplesSEXP, SEXP sampleSizeSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_TStarFastResampleRCPP_try(xNumericSEXP, yNumericSEXP, numResamplesSEXP, sampleSizeSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_TStarFastResampleRCPP_try(xNumericSEXP, yNumericSEXP, numResamplesSEXP, sampleSizeSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -390,7 +438,7 @@ RcppExport SEXP TauStar_TStarFastResampleRCPP(SEXP xNumericSEXP, SEXP yNumericSE
 }
 // TStarNaiveRCPP
 Rcpp::NumericVector TStarNaiveRCPP(NumericVector x, NumericVector y, bool vStat);
-static SEXP TauStar_TStarNaiveRCPP_try(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
+static SEXP _TauStar_TStarNaiveRCPP_try(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
@@ -400,16 +448,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP TauStar_TStarNaiveRCPP(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
+RcppExport SEXP _TauStar_TStarNaiveRCPP(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(TauStar_TStarNaiveRCPP_try(xSEXP, ySEXP, vStatSEXP));
+        rcpp_result_gen = PROTECT(_TauStar_TStarNaiveRCPP_try(xSEXP, ySEXP, vStatSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
         UNPROTECT(1);
         Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
     }
     Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
     if (rcpp_isError_gen) {
@@ -422,7 +474,7 @@ RcppExport SEXP TauStar_TStarNaiveRCPP(SEXP xSEXP, SEXP ySEXP, SEXP vStatSEXP) {
 }
 
 // validate (ensure exported C++ functions exist before calling them)
-static int TauStar_RcppExport_validate(const char* sig) { 
+static int _TauStar_RcppExport_validate(const char* sig) { 
     static std::set<std::string> signatures;
     if (signatures.empty()) {
         signatures.insert("arma::vec(*HoeffIndCdfRCPP)(arma::vec,double)");
@@ -443,20 +495,20 @@ static int TauStar_RcppExport_validate(const char* sig) {
 }
 
 // registerCCallable (register entry points for exported C++ functions)
-RcppExport SEXP TauStar_RcppExport_registerCCallable() { 
-    R_RegisterCCallable("TauStar", "TauStar_HoeffIndCdfRCPP", (DL_FUNC)TauStar_HoeffIndCdfRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_HoeffIndPdfRCPP", (DL_FUNC)TauStar_HoeffIndPdfRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_eigenForDiscreteProbs", (DL_FUNC)TauStar_eigenForDiscreteProbs_try);
-    R_RegisterCCallable("TauStar", "TauStar_HoeffIndDiscreteCdfRCPP", (DL_FUNC)TauStar_HoeffIndDiscreteCdfRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_HoeffIndDiscretePdfRCPP", (DL_FUNC)TauStar_HoeffIndDiscretePdfRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_HoeffIndMixedCdfRCPP", (DL_FUNC)TauStar_HoeffIndMixedCdfRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_HoeffIndMixedPdfRCPP", (DL_FUNC)TauStar_HoeffIndMixedPdfRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_TStarHellerAndHellerRCPP", (DL_FUNC)TauStar_TStarHellerAndHellerRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_VTStarHellerAndHellerRCPP", (DL_FUNC)TauStar_VTStarHellerAndHellerRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_TStarWeihsEtAlRCPP", (DL_FUNC)TauStar_TStarWeihsEtAlRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_VTStarWeihsEtAlRCPP", (DL_FUNC)TauStar_VTStarWeihsEtAlRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_TStarFastResampleRCPP", (DL_FUNC)TauStar_TStarFastResampleRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_TStarNaiveRCPP", (DL_FUNC)TauStar_TStarNaiveRCPP_try);
-    R_RegisterCCallable("TauStar", "TauStar_RcppExport_validate", (DL_FUNC)TauStar_RcppExport_validate);
+RcppExport SEXP _TauStar_RcppExport_registerCCallable() { 
+    R_RegisterCCallable("TauStar", "_TauStar_HoeffIndCdfRCPP", (DL_FUNC)_TauStar_HoeffIndCdfRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_HoeffIndPdfRCPP", (DL_FUNC)_TauStar_HoeffIndPdfRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_eigenForDiscreteProbs", (DL_FUNC)_TauStar_eigenForDiscreteProbs_try);
+    R_RegisterCCallable("TauStar", "_TauStar_HoeffIndDiscreteCdfRCPP", (DL_FUNC)_TauStar_HoeffIndDiscreteCdfRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_HoeffIndDiscretePdfRCPP", (DL_FUNC)_TauStar_HoeffIndDiscretePdfRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_HoeffIndMixedCdfRCPP", (DL_FUNC)_TauStar_HoeffIndMixedCdfRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_HoeffIndMixedPdfRCPP", (DL_FUNC)_TauStar_HoeffIndMixedPdfRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_TStarHellerAndHellerRCPP", (DL_FUNC)_TauStar_TStarHellerAndHellerRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_VTStarHellerAndHellerRCPP", (DL_FUNC)_TauStar_VTStarHellerAndHellerRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_TStarWeihsEtAlRCPP", (DL_FUNC)_TauStar_TStarWeihsEtAlRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_VTStarWeihsEtAlRCPP", (DL_FUNC)_TauStar_VTStarWeihsEtAlRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_TStarFastResampleRCPP", (DL_FUNC)_TauStar_TStarFastResampleRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_TStarNaiveRCPP", (DL_FUNC)_TauStar_TStarNaiveRCPP_try);
+    R_RegisterCCallable("TauStar", "_TauStar_RcppExport_validate", (DL_FUNC)_TauStar_RcppExport_validate);
     return R_NilValue;
 }

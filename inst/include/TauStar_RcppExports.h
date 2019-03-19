@@ -17,7 +17,7 @@ namespace TauStar {
             require("TauStar", Rcpp::Named("quietly") = true);
             typedef int(*Ptr_validate)(const char*);
             static Ptr_validate p_validate = (Ptr_validate)
-                R_GetCCallable("TauStar", "TauStar_RcppExport_validate");
+                R_GetCCallable("TauStar", "_TauStar_RcppExport_validate");
             if (!p_validate(sig)) {
                 throw Rcpp::function_not_exported(
                     "C++ function with signature '" + std::string(sig) + "' not found in TauStar");
@@ -30,17 +30,19 @@ namespace TauStar {
         static Ptr_HoeffIndCdfRCPP p_HoeffIndCdfRCPP = NULL;
         if (p_HoeffIndCdfRCPP == NULL) {
             validateSignature("arma::vec(*HoeffIndCdfRCPP)(arma::vec,double)");
-            p_HoeffIndCdfRCPP = (Ptr_HoeffIndCdfRCPP)R_GetCCallable("TauStar", "TauStar_HoeffIndCdfRCPP");
+            p_HoeffIndCdfRCPP = (Ptr_HoeffIndCdfRCPP)R_GetCCallable("TauStar", "_TauStar_HoeffIndCdfRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_HoeffIndCdfRCPP(Rcpp::wrap(x), Rcpp::wrap(maxError));
+            rcpp_result_gen = p_HoeffIndCdfRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(maxError)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
@@ -49,17 +51,19 @@ namespace TauStar {
         static Ptr_HoeffIndPdfRCPP p_HoeffIndPdfRCPP = NULL;
         if (p_HoeffIndPdfRCPP == NULL) {
             validateSignature("arma::vec(*HoeffIndPdfRCPP)(arma::vec,double)");
-            p_HoeffIndPdfRCPP = (Ptr_HoeffIndPdfRCPP)R_GetCCallable("TauStar", "TauStar_HoeffIndPdfRCPP");
+            p_HoeffIndPdfRCPP = (Ptr_HoeffIndPdfRCPP)R_GetCCallable("TauStar", "_TauStar_HoeffIndPdfRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_HoeffIndPdfRCPP(Rcpp::wrap(x), Rcpp::wrap(maxError));
+            rcpp_result_gen = p_HoeffIndPdfRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(maxError)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
@@ -68,17 +72,19 @@ namespace TauStar {
         static Ptr_eigenForDiscreteProbs p_eigenForDiscreteProbs = NULL;
         if (p_eigenForDiscreteProbs == NULL) {
             validateSignature("arma::vec(*eigenForDiscreteProbs)(arma::vec)");
-            p_eigenForDiscreteProbs = (Ptr_eigenForDiscreteProbs)R_GetCCallable("TauStar", "TauStar_eigenForDiscreteProbs");
+            p_eigenForDiscreteProbs = (Ptr_eigenForDiscreteProbs)R_GetCCallable("TauStar", "_TauStar_eigenForDiscreteProbs");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_eigenForDiscreteProbs(Rcpp::wrap(p));
+            rcpp_result_gen = p_eigenForDiscreteProbs(Shield<SEXP>(Rcpp::wrap(p)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
@@ -87,17 +93,19 @@ namespace TauStar {
         static Ptr_HoeffIndDiscreteCdfRCPP p_HoeffIndDiscreteCdfRCPP = NULL;
         if (p_HoeffIndDiscreteCdfRCPP == NULL) {
             validateSignature("arma::vec(*HoeffIndDiscreteCdfRCPP)(arma::vec,arma::vec,arma::vec,double)");
-            p_HoeffIndDiscreteCdfRCPP = (Ptr_HoeffIndDiscreteCdfRCPP)R_GetCCallable("TauStar", "TauStar_HoeffIndDiscreteCdfRCPP");
+            p_HoeffIndDiscreteCdfRCPP = (Ptr_HoeffIndDiscreteCdfRCPP)R_GetCCallable("TauStar", "_TauStar_HoeffIndDiscreteCdfRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_HoeffIndDiscreteCdfRCPP(Rcpp::wrap(x), Rcpp::wrap(eigenP), Rcpp::wrap(eigenQ), Rcpp::wrap(maxError));
+            rcpp_result_gen = p_HoeffIndDiscreteCdfRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(eigenP)), Shield<SEXP>(Rcpp::wrap(eigenQ)), Shield<SEXP>(Rcpp::wrap(maxError)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
@@ -106,17 +114,19 @@ namespace TauStar {
         static Ptr_HoeffIndDiscretePdfRCPP p_HoeffIndDiscretePdfRCPP = NULL;
         if (p_HoeffIndDiscretePdfRCPP == NULL) {
             validateSignature("arma::vec(*HoeffIndDiscretePdfRCPP)(arma::vec,arma::vec,arma::vec,double)");
-            p_HoeffIndDiscretePdfRCPP = (Ptr_HoeffIndDiscretePdfRCPP)R_GetCCallable("TauStar", "TauStar_HoeffIndDiscretePdfRCPP");
+            p_HoeffIndDiscretePdfRCPP = (Ptr_HoeffIndDiscretePdfRCPP)R_GetCCallable("TauStar", "_TauStar_HoeffIndDiscretePdfRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_HoeffIndDiscretePdfRCPP(Rcpp::wrap(x), Rcpp::wrap(eigenP), Rcpp::wrap(eigenQ), Rcpp::wrap(maxError));
+            rcpp_result_gen = p_HoeffIndDiscretePdfRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(eigenP)), Shield<SEXP>(Rcpp::wrap(eigenQ)), Shield<SEXP>(Rcpp::wrap(maxError)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
@@ -125,17 +135,19 @@ namespace TauStar {
         static Ptr_HoeffIndMixedCdfRCPP p_HoeffIndMixedCdfRCPP = NULL;
         if (p_HoeffIndMixedCdfRCPP == NULL) {
             validateSignature("arma::vec(*HoeffIndMixedCdfRCPP)(arma::vec,arma::vec,double)");
-            p_HoeffIndMixedCdfRCPP = (Ptr_HoeffIndMixedCdfRCPP)R_GetCCallable("TauStar", "TauStar_HoeffIndMixedCdfRCPP");
+            p_HoeffIndMixedCdfRCPP = (Ptr_HoeffIndMixedCdfRCPP)R_GetCCallable("TauStar", "_TauStar_HoeffIndMixedCdfRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_HoeffIndMixedCdfRCPP(Rcpp::wrap(x), Rcpp::wrap(eigenP), Rcpp::wrap(maxError));
+            rcpp_result_gen = p_HoeffIndMixedCdfRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(eigenP)), Shield<SEXP>(Rcpp::wrap(maxError)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
@@ -144,17 +156,19 @@ namespace TauStar {
         static Ptr_HoeffIndMixedPdfRCPP p_HoeffIndMixedPdfRCPP = NULL;
         if (p_HoeffIndMixedPdfRCPP == NULL) {
             validateSignature("arma::vec(*HoeffIndMixedPdfRCPP)(arma::vec,arma::vec,double)");
-            p_HoeffIndMixedPdfRCPP = (Ptr_HoeffIndMixedPdfRCPP)R_GetCCallable("TauStar", "TauStar_HoeffIndMixedPdfRCPP");
+            p_HoeffIndMixedPdfRCPP = (Ptr_HoeffIndMixedPdfRCPP)R_GetCCallable("TauStar", "_TauStar_HoeffIndMixedPdfRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_HoeffIndMixedPdfRCPP(Rcpp::wrap(x), Rcpp::wrap(eigenP), Rcpp::wrap(maxError));
+            rcpp_result_gen = p_HoeffIndMixedPdfRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(eigenP)), Shield<SEXP>(Rcpp::wrap(maxError)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
@@ -163,17 +177,19 @@ namespace TauStar {
         static Ptr_TStarHellerAndHellerRCPP p_TStarHellerAndHellerRCPP = NULL;
         if (p_TStarHellerAndHellerRCPP == NULL) {
             validateSignature("double(*TStarHellerAndHellerRCPP)(const arma::vec&,const arma::vec&)");
-            p_TStarHellerAndHellerRCPP = (Ptr_TStarHellerAndHellerRCPP)R_GetCCallable("TauStar", "TauStar_TStarHellerAndHellerRCPP");
+            p_TStarHellerAndHellerRCPP = (Ptr_TStarHellerAndHellerRCPP)R_GetCCallable("TauStar", "_TauStar_TStarHellerAndHellerRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_TStarHellerAndHellerRCPP(Rcpp::wrap(x), Rcpp::wrap(y));
+            rcpp_result_gen = p_TStarHellerAndHellerRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(y)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<double >(rcpp_result_gen);
     }
 
@@ -182,17 +198,19 @@ namespace TauStar {
         static Ptr_VTStarHellerAndHellerRCPP p_VTStarHellerAndHellerRCPP = NULL;
         if (p_VTStarHellerAndHellerRCPP == NULL) {
             validateSignature("double(*VTStarHellerAndHellerRCPP)(const arma::vec&,const arma::vec&)");
-            p_VTStarHellerAndHellerRCPP = (Ptr_VTStarHellerAndHellerRCPP)R_GetCCallable("TauStar", "TauStar_VTStarHellerAndHellerRCPP");
+            p_VTStarHellerAndHellerRCPP = (Ptr_VTStarHellerAndHellerRCPP)R_GetCCallable("TauStar", "_TauStar_VTStarHellerAndHellerRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_VTStarHellerAndHellerRCPP(Rcpp::wrap(x), Rcpp::wrap(y));
+            rcpp_result_gen = p_VTStarHellerAndHellerRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(y)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<double >(rcpp_result_gen);
     }
 
@@ -201,17 +219,19 @@ namespace TauStar {
         static Ptr_TStarWeihsEtAlRCPP p_TStarWeihsEtAlRCPP = NULL;
         if (p_TStarWeihsEtAlRCPP == NULL) {
             validateSignature("Rcpp::NumericVector(*TStarWeihsEtAlRCPP)(NumericVector,NumericVector)");
-            p_TStarWeihsEtAlRCPP = (Ptr_TStarWeihsEtAlRCPP)R_GetCCallable("TauStar", "TauStar_TStarWeihsEtAlRCPP");
+            p_TStarWeihsEtAlRCPP = (Ptr_TStarWeihsEtAlRCPP)R_GetCCallable("TauStar", "_TauStar_TStarWeihsEtAlRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_TStarWeihsEtAlRCPP(Rcpp::wrap(xNumeric), Rcpp::wrap(yNumeric));
+            rcpp_result_gen = p_TStarWeihsEtAlRCPP(Shield<SEXP>(Rcpp::wrap(xNumeric)), Shield<SEXP>(Rcpp::wrap(yNumeric)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<Rcpp::NumericVector >(rcpp_result_gen);
     }
 
@@ -220,17 +240,19 @@ namespace TauStar {
         static Ptr_VTStarWeihsEtAlRCPP p_VTStarWeihsEtAlRCPP = NULL;
         if (p_VTStarWeihsEtAlRCPP == NULL) {
             validateSignature("Rcpp::NumericVector(*VTStarWeihsEtAlRCPP)(NumericVector,NumericVector)");
-            p_VTStarWeihsEtAlRCPP = (Ptr_VTStarWeihsEtAlRCPP)R_GetCCallable("TauStar", "TauStar_VTStarWeihsEtAlRCPP");
+            p_VTStarWeihsEtAlRCPP = (Ptr_VTStarWeihsEtAlRCPP)R_GetCCallable("TauStar", "_TauStar_VTStarWeihsEtAlRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_VTStarWeihsEtAlRCPP(Rcpp::wrap(xNumeric), Rcpp::wrap(yNumeric));
+            rcpp_result_gen = p_VTStarWeihsEtAlRCPP(Shield<SEXP>(Rcpp::wrap(xNumeric)), Shield<SEXP>(Rcpp::wrap(yNumeric)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<Rcpp::NumericVector >(rcpp_result_gen);
     }
 
@@ -239,17 +261,19 @@ namespace TauStar {
         static Ptr_TStarFastResampleRCPP p_TStarFastResampleRCPP = NULL;
         if (p_TStarFastResampleRCPP == NULL) {
             validateSignature("Rcpp::NumericVector(*TStarFastResampleRCPP)(NumericVector,NumericVector,int,int)");
-            p_TStarFastResampleRCPP = (Ptr_TStarFastResampleRCPP)R_GetCCallable("TauStar", "TauStar_TStarFastResampleRCPP");
+            p_TStarFastResampleRCPP = (Ptr_TStarFastResampleRCPP)R_GetCCallable("TauStar", "_TauStar_TStarFastResampleRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_TStarFastResampleRCPP(Rcpp::wrap(xNumeric), Rcpp::wrap(yNumeric), Rcpp::wrap(numResamples), Rcpp::wrap(sampleSize));
+            rcpp_result_gen = p_TStarFastResampleRCPP(Shield<SEXP>(Rcpp::wrap(xNumeric)), Shield<SEXP>(Rcpp::wrap(yNumeric)), Shield<SEXP>(Rcpp::wrap(numResamples)), Shield<SEXP>(Rcpp::wrap(sampleSize)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<Rcpp::NumericVector >(rcpp_result_gen);
     }
 
@@ -258,17 +282,19 @@ namespace TauStar {
         static Ptr_TStarNaiveRCPP p_TStarNaiveRCPP = NULL;
         if (p_TStarNaiveRCPP == NULL) {
             validateSignature("Rcpp::NumericVector(*TStarNaiveRCPP)(NumericVector,NumericVector,bool)");
-            p_TStarNaiveRCPP = (Ptr_TStarNaiveRCPP)R_GetCCallable("TauStar", "TauStar_TStarNaiveRCPP");
+            p_TStarNaiveRCPP = (Ptr_TStarNaiveRCPP)R_GetCCallable("TauStar", "_TauStar_TStarNaiveRCPP");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_TStarNaiveRCPP(Rcpp::wrap(x), Rcpp::wrap(y), Rcpp::wrap(vStat));
+            rcpp_result_gen = p_TStarNaiveRCPP(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(y)), Shield<SEXP>(Rcpp::wrap(vStat)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<Rcpp::NumericVector >(rcpp_result_gen);
     }
 

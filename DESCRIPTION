@@ -1,8 +1,8 @@
 Package: TauStar
 Type: Package
 Title: Efficient Computation and Testing of the Bergsma-Dassios Sign Covariance
-Version: 1.1.3
-Date: 2017-3-20
+Version: 1.1.4
+Date: 2019-3-18
 Authors@R: c(person("Luca", "Weihs", email="lucaw@uw.edu", role=c("aut", "cre")),
             person("Emin", "Martinian", role=c("ctb"), comment="Created the red-black tree library included in package."))
 Maintainer: Luca Weihs <lucaw@uw.edu>

@@ -68,6 +68,7 @@ test_that("tauStarTest with discrete data.", {
 })
 
 test_that("tauStarTest with mixed data.", {
+  suppressWarnings(RNGversion("3.5.0"))
   set.seed(238)
   sims = 10
   n = 200
